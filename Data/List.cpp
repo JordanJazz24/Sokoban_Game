@@ -123,26 +123,31 @@ char **List::getLevel(int nivel ) { //función para obtener el nivel del archivo
 
     return mat;
 }
-
 void List::createGrid(char **mat) {
-    Node* head_main = NULL;
-    Node* prev, *upper = new Node(-1);
+    // Inicialización de punteros
+    Node* head_main = NULL;    // Puntero al nodo principal (cabeza de la lista principal)
+    Node* prev, *upper = new Node(-1);  // Punteros para rastrear nodos anteriores y superiores
+
+    // Iterar a través de las filas
     for (int i = 0; i < numRows; i++) {
-        Node* head_row;
-        Node* prev = new Node(-1);
+        Node* head_row; // Puntero al nodo principal de la fila actual
+        Node* prev = new Node(-1); // Nodo temporal para rastrear el nodo anterior en la fila actual
 
+        // Iterar a través de las columnas
         for (int j = 0; j < numCols; j++) {
-            Node* temp = new Node(mat[i][j]);
+            Node* temp = new Node(mat[i][j]); // Crear un nuevo nodo con el valor del carácter en la matriz
 
-            if (j == 0) head_row = temp;
-            if (i == 0 && j == 0) head_main = temp;
+            if (j == 0) head_row = temp; // Si es la primera columna, establecer como cabeza de fila
+            if (i == 0 && j == 0) head_main = temp; // Si es la primera celda, establecer como cabeza principal
 
+            // Conectar nodos en dirección horizontal (izquierda y derecha)
             temp->left = prev;
             prev->right = temp;
-            if (i == numRows - 1) temp->down = NULL;
 
+            // Conectar nodos en dirección vertical (arriba y abajo)
+            if (i == numRows - 1) temp->down = NULL; // Si es la última fila, establecer como NULL
             if (!upper->right) {
-                upper->right = new Node(-1);
+                upper->right = new Node(-1); // Crear un nodo superior si es necesario
             }
             upper = upper->right;
 
@@ -150,11 +155,11 @@ void List::createGrid(char **mat) {
             upper->down = temp;
             prev = temp;
 
-            if (j == numCols - 1) prev->right = NULL;
+            if (j == numCols - 1) prev->right = NULL; // Si es la última columna, establecer como NULL
         }
 
-        upper = head_row->left;
+        upper = head_row->left; // Mover el puntero superior a la columna izquierda de la fila siguiente
     }
 
-    head= head_main;
+    head = head_main; // Establecer la cabeza de la lista principal
 }
