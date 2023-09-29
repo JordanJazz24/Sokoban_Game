@@ -27,7 +27,7 @@ public:
     char getSymbol(int row, int col) const;
     void setSymbol(int row, int col, char symbol);
     void createGrid(char** mat) ;
-
+    void movePlayer(Node*& playerNode, char direction) ;
     void printGrid() const;
     char** getLevel(int level);
 

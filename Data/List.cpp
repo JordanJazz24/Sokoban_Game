@@ -173,3 +173,30 @@ void List::createGrid(char **mat) {
 
     head = head_main; // Establecer la cabeza de la lista principal
 }
+void List::movePlayer(Node *&playerNode, char direction) {
+    Node* nextNode = nullptr;
+    // Determinar el nodo en la dirección deseada
+    switch (direction) {
+        case 'w': // Mover hacia arriba
+            nextNode = playerNode->up;
+            break;
+        case 's': // Mover hacia abajo
+            nextNode = playerNode->down;
+            break;
+        case 'a': // Mover hacia la izquierda
+            nextNode = playerNode->left;
+            break;
+        case 'd': // Mover hacia la derecha
+            nextNode = playerNode->right;
+            break;
+    }
+
+    // Verificar si el movimiento es válido (por ejemplo, si nextNode no es nulo)
+    if (nextNode != nullptr) {
+        // Intercambiar los símbolos de los nodos
+        char temp = playerNode->symbol;
+        playerNode->symbol = nextNode->symbol;
+        nextNode->symbol = temp;
+    }
+}
+
