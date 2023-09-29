@@ -15,6 +15,7 @@ using namespace std;
 class List {
 private:
     Node* head;      // Puntero al primer nodo (esquina superior izquierda)
+    Node* playerNode;
     int numRows;     // Número de filas en la matriz
     int numCols;     // Número de columnas en la matriz
 

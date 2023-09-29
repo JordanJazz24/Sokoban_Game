@@ -4,8 +4,13 @@
 
 #include "List.h"
 List::List(int level) : head(nullptr) {
+    // Inicializar el número de filas y columnas
+    numRows = 0;
+    numCols = 0;
+    playerNode = nullptr;
+    head = nullptr;
     // Crear la matriz a partir del archivo
-    char** mat = getLevel(level);
+    char** mat = getLevel(level); //
     createGrid(mat);
 }
 
@@ -71,8 +76,7 @@ char **List::getLevel(int nivel ) { //función para obtener el nivel del archivo
         return nullptr;
     }
 
-    numRows = 0;
-    numCols = 0;
+
     int maxCols = 0; // Variable para almacenar la longitud máxima de la columna
 
     // Contar el número de filas y la longitud máxima de la columna
@@ -136,6 +140,12 @@ void List::createGrid(char **mat) {
         // Iterar a través de las columnas
         for (int j = 0; j < numCols; j++) {
             Node* temp = new Node(mat[i][j]); // Crear un nuevo nodo con el valor del carácter en la matriz
+
+
+            if (mat[i][j] == '@') {
+                // Si encontramos el caracter del jugador, almacenamos una referencia a este nodo
+                playerNode = temp;
+            }
 
             if (j == 0) head_row = temp; // Si es la primera columna, establecer como cabeza de fila
             if (i == 0 && j == 0) head_main = temp; // Si es la primera celda, establecer como cabeza principal
