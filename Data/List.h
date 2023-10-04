@@ -18,6 +18,9 @@ class List {
 private:
     Node* head;      // Puntero al primer nodo (esquina superior izquierda) es mi grid
     Node* playerNode;
+    bool playerInPoint = false;
+    vector<Node*> boxes;
+    vector<Node*> points;
     int numRows;     // Número de filas en la matriz
     int numCols;     // Número de columnas en la matriz
 
@@ -32,6 +35,10 @@ public:
     void createGrid(char** mat) ;
     void movePlayer(Movement movement);
     void printGrid() const;
+    bool isCellFree(Node* dirNode);
+    bool isCellGoal(Node* dirNode);
+    bool isCellBox(Node* dirNode);
+    void swapSymbols(Node*& node);
     char** getLevel(int level);
 
 

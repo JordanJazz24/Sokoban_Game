@@ -2,6 +2,7 @@
 // Created by jorda on 8/30/2023.
 //
 
+#include <vector>
 #include "List.h"
 
 List::List(int level) : head(nullptr) {
@@ -133,8 +134,7 @@ char** List::getLevel(int nivel) { //función para obtener el nivel del archivo 
 
 void List::createGrid(char** mat) {
     // Inicialización de punteros
-    Node* head_main = new Node(-2);    // Puntero al nodo principal (cabeza de la lista principal)
-    Node* prev = nullptr;
+    Node* head_main = nullptr;    // Puntero al nodo principal (cabeza de la lista principal)
     Node * upper = new Node(-1);  // Punteros para rastrear nodos anteriores y superiores
 
     // Iterar a través de las filas
@@ -150,6 +150,14 @@ void List::createGrid(char** mat) {
             if (mat[i][j] == '@') {
                 // Si encontramos el caracter del jugador, almacenamos una referencia a este nodo
                 this->playerNode = temp;
+            }
+            if (mat[i][j] == '$') {
+                // Si encontramos el caracter de la caja, almacenamos una referencia a este nodo
+                boxes.push_back(temp);
+            }
+            if (mat[i][j] == '.') {
+                // Si encontramos el caracter del punto, almacenamos una referencia a este nodo
+                points.push_back(temp);
             }
 
             if (j == 0) head_row = temp; // Si es la primera columna, establecer como cabeza de fila
@@ -181,21 +189,67 @@ void List::createGrid(char** mat) {
 
 void List::movePlayer(Movement movement) {
     Node* nextNode = nullptr;
+
     // Determinar el nodo en la dirección deseada
     switch (movement) {
         case UP:
-            if (isValidMove(playerNode->up)) {
+            if (isValidMove(playerNode->up)) { //si el movimiento es válido
                 nextNode = playerNode->up;
+            }
+            else if (isCellBox(playerNode->up)) { //si el jugador se quiere mover a una caja
+                //mover la caja
+                if (isCellFree(playerNode->up->up)) {
+                    playerNode->up->symbol = ' ';
+                    playerNode->up->up->symbol = '$';
+                    //mover al jugador
+                    nextNode = playerNode->up;
+                }
+                if (isCellGoal(playerNode->up->up)) {
+                    playerNode->up->symbol = ' ';
+                    playerNode->up->up->symbol = '!';
+                    //mover al jugador
+                    nextNode = playerNode->up;
+                }
             }
             break;
         case DOWN:
             if (isValidMove(playerNode->down)) {
                 nextNode = playerNode->down;
             }
+            if (isCellBox(playerNode->down)) { //si el jugador se quiere mover a una caja
+                //mover la caja
+                if (isCellFree(playerNode->down->down)) {
+                    playerNode->down->symbol = ' ';
+                    playerNode->down->down->symbol = '$';
+                    //mover al jugador
+                    nextNode = playerNode->down;
+                }
+                if (isCellGoal(playerNode->down->down)) {
+                    playerNode->down->symbol = ' ';
+                    playerNode->down->down->symbol = '!';
+                    //mover al jugador
+                    nextNode = playerNode->down;
+                }
+            }
             break;
         case LEFT:
             if (isValidMove(playerNode->left)) {
                 nextNode = playerNode->left;
+            }
+            if (isCellBox(playerNode->left)) { //si el jugador se quiere mover a una caja
+                //mover la caja
+                if (isCellFree(playerNode->left->left)) {
+                    playerNode->left->symbol = ' ';
+                    playerNode->left->left->symbol = '$';
+                    //mover al jugador
+                    nextNode = playerNode->left;
+                }
+                if  (isCellGoal(playerNode->left->left)) {
+                    playerNode->left->symbol = ' ';
+                    playerNode->left->left->symbol = '!';
+                    //mover al jugador
+                    nextNode = playerNode->left;
+                }
             }
             break;
 
@@ -203,6 +257,22 @@ void List::movePlayer(Movement movement) {
             if (isValidMove(playerNode->right)) {
                 nextNode = playerNode->right;
             }
+            if (isCellBox(playerNode->right)) { //si el jugador se quiere mover a una caja
+                //mover la caja
+                if (isCellFree(playerNode->right->right)) {
+                    playerNode->right->symbol = ' ';
+                    playerNode->right->right->symbol = '$';
+                    //mover al jugador
+                    nextNode = playerNode->right;
+                }
+                if (isCellGoal(playerNode->right->right)) {
+                    playerNode->right->symbol = ' ';
+                    playerNode->right->right->symbol = '!';
+                    //mover al jugador
+                    nextNode = playerNode->right;
+                }
+            }
+
             break;
         default:
             break;
@@ -210,27 +280,65 @@ void List::movePlayer(Movement movement) {
 
     // Verificar si el movimiento es válido (por ejemplo, si nextNode no es nulo)
     if (nextNode != nullptr) {
-        // Intercambiar los símbolos de los nodos
-        char temp = playerNode->symbol;
-        playerNode->symbol = nextNode->symbol;
-        nextNode->symbol = temp;
-        this->playerNode = nextNode;
+
+
+        if(isCellGoal(nextNode)){
+          if(playerInPoint){
+                nextNode->symbol = '.';
+                swapSymbols(nextNode);
+                return;
+          }
+            playerInPoint = true;
+            nextNode->symbol = ' ';
+            swapSymbols(nextNode);
+            return;
+        }
+        if (playerInPoint) {
+            nextNode->symbol = '.';
+            swapSymbols(nextNode);
+            playerInPoint = false;
+        } else{
+
+            swapSymbols(nextNode);
+        }
     }
 }
 
 bool List::isValidMove(Node* dirNode) { //recibe el nodo al que se quiere mover
 
-    if (dirNode->symbol == ' ' || dirNode->symbol == '.') { //si el simbolo del nodo
+    if (dirNode->symbol == ' ' || dirNode->symbol=='.' ) { //si el simbolo del nodo
         return true;                                       //al que se quiere mover es un espacio o un punto
     }
     cout << "Movimiento invalido" << endl;
     return false;
 }
 
+bool List::isCellFree(Node *dirNode) {
+    if (dirNode->symbol == ' ' ) { //jugador puede moverse a un espacio vacio o a un punto
+        return true;
+    }
+    return false;
+}
 
+bool List::isCellGoal(Node *dirNode) {
+    if (dirNode->symbol == '.') { //
+        return true;
+    }
+    return false;
+}
 
-//
-//void List::movePlayer(Nodr direction) {
+bool List::isCellBox(Node *dirNode) {
+    if (dirNode->symbol == '$') { //jugador puede moverse a un espacio vacio o a un punto
+        return true;
+    }
+    return false;
+}
 
-//}
+void List::swapSymbols(Node *&nextNode) {
+    char temp = playerNode->symbol;
+    playerNode->symbol = nextNode->symbol;
+    nextNode->symbol = temp;
+    this->playerNode = nextNode;
+}
+
 
