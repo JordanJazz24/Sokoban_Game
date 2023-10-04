@@ -11,18 +11,18 @@ List::List(int level) : head(nullptr) {
     playerNode = nullptr;
     head = nullptr;
     // Crear la matriz a partir del archivo
-    char **mat = getLevel(level); //
+    char** mat = getLevel(level); //
     createGrid(mat);
 }
 
 List::~List() {
     // Liberar la memoria de los nodos enlazados // no he revisado si funciona al 100
-    Node *current = head;
+    Node* current = head;
     while (current) {
-        Node *next = current->right;
-        Node *rowNode = current;
+        Node* next = current->right;
+        Node* rowNode = current;
         while (rowNode) {
-            Node *toDelete = rowNode;
+            Node* toDelete = rowNode;
             rowNode = rowNode->down;
             delete toDelete;
         }
@@ -32,7 +32,7 @@ List::~List() {
 
 char List::getSymbol(int row, int col) const {
     // Obtener el símbolo en la posición (row, col)
-    Node *node = head;
+    Node* node = head;
     for (int i = 1; i < row; ++i) {
         node = node->down;
     }
@@ -44,7 +44,7 @@ char List::getSymbol(int row, int col) const {
 
 void List::setSymbol(int row, int col, char symbol) {
     // Establecer el símbolo en la posición (row, col)
-    Node *node = head;
+    Node* node = head;
     for (int i = 1; i < row; ++i) { //si es una estructura de 4x4, para llegar al elemento del lugar 4x1
         node = node->down;           //tendríamos que bajar solo 3 veces porque el head apunta al lugar 1x1
     }
@@ -55,8 +55,8 @@ void List::setSymbol(int row, int col, char symbol) {
 }
 
 void List::printGrid() const {
-    Node *downptr = head;
-    Node *rightptr;
+    Node* downptr = head;
+    Node* rightptr;
     while (downptr) {
         rightptr = downptr;
         while (rightptr) {
@@ -69,7 +69,7 @@ void List::printGrid() const {
 }
 
 
-char **List::getLevel(int nivel) { //función para obtener el nivel del archivo no importa el tamaño de la matriz
+char** List::getLevel(int nivel) { //función para obtener el nivel del archivo no importa el tamaño de la matriz
     ifstream inputFile("Nivel " + std::to_string(nivel) + ".txt");
 
     if (!inputFile) {
@@ -86,7 +86,8 @@ char **List::getLevel(int nivel) { //función para obtener el nivel del archivo 
     while (inputFile.get(ch)) {
         if (ch != '\n') {
             acumuladorCols++;
-        } else {
+        }
+        else {
             numRows++;
             if (acumuladorCols > maxCols) {
                 maxCols = acumuladorCols;
@@ -103,7 +104,7 @@ char **List::getLevel(int nivel) { //función para obtener el nivel del archivo 
     inputFile.seekg(0, ios::beg);
 
     // Crear una matriz char** de acuerdo al número de filas y la longitud máxima de la columna
-    char **mat = new char *[numRows];
+    char** mat = new char* [numRows];
     for (int i = 0; i < numRows; i++) {
         mat[i] = new char[maxCols];
     }
@@ -118,7 +119,8 @@ char **List::getLevel(int nivel) { //función para obtener el nivel del archivo 
     while (inputFile.get(ch)) {
         if (ch != '\n') {
             mat[row][col++] = ch;
-        } else {
+        }
+        else {
             row++;
             col = 0;
         }
@@ -129,19 +131,20 @@ char **List::getLevel(int nivel) { //función para obtener el nivel del archivo 
     return mat;
 }
 
-void List::createGrid(char **mat) {
+void List::createGrid(char** mat) {
     // Inicialización de punteros
-    Node *head_main = NULL;    // Puntero al nodo principal (cabeza de la lista principal)
-    Node *prev, *upper = new Node(-1);  // Punteros para rastrear nodos anteriores y superiores
+    Node* head_main = new Node(-2);    // Puntero al nodo principal (cabeza de la lista principal)
+    Node* prev = nullptr;
+    Node * upper = new Node(-1);  // Punteros para rastrear nodos anteriores y superiores
 
     // Iterar a través de las filas
     for (int i = 0; i < numRows; i++) {
-        Node *head_row; // Puntero al nodo principal de la fila actual
-        Node *prev = new Node(-1); // Nodo temporal para rastrear el nodo anterior en la fila actual
+        Node* head_row = nullptr; // Puntero al nodo principal de la fila actual
+        Node* prev = new Node(-1); // Nodo temporal para rastrear el nodo anterior en la fila actual
 
         // Iterar a través de las columnas
         for (int j = 0; j < numCols; j++) {
-            Node *temp = new Node(mat[i][j]); // Crear un nuevo nodo con el valor del carácter en la matriz
+            Node* temp = new Node(mat[i][j]); // Crear un nuevo nodo con el valor del carácter en la matriz
 
 
             if (mat[i][j] == '@') {
@@ -177,7 +180,7 @@ void List::createGrid(char **mat) {
 }
 
 void List::movePlayer(Movement movement) {
-    Node *nextNode = nullptr;
+    Node* nextNode = nullptr;
     // Determinar el nodo en la dirección deseada
     switch (movement) {
         case UP:
@@ -215,7 +218,7 @@ void List::movePlayer(Movement movement) {
     }
 }
 
-bool List::isValidMove(Node *dirNode) { //recibe el nodo al que se quiere mover
+bool List::isValidMove(Node* dirNode) { //recibe el nodo al que se quiere mover
 
     if (dirNode->symbol == ' ' || dirNode->symbol == '.') { //si el simbolo del nodo
         return true;                                       //al que se quiere mover es un espacio o un punto
