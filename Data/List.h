@@ -11,10 +11,12 @@
 #include <string>
 #include <sstream>
 #include "Node.h"
+enum Movement{UP, DOWN, LEFT, RIGHT};
+
 using namespace std;
 class List {
 private:
-    Node* head;      // Puntero al primer nodo (esquina superior izquierda)
+    Node* head;      // Puntero al primer nodo (esquina superior izquierda) es mi grid
     Node* playerNode;
     int numRows;     // Número de filas en la matriz
     int numCols;     // Número de columnas en la matriz
@@ -26,8 +28,9 @@ public:
     // Métodos para acceder y manipular la matriz
     char getSymbol(int row, int col) const;
     void setSymbol(int row, int col, char symbol);
+    bool isValidMove( Node* dirNode);
     void createGrid(char** mat) ;
-    void movePlayer(Node*& playerNode, char direction) ;
+    void movePlayer(Movement movement);
     void printGrid() const;
     char** getLevel(int level);
 
