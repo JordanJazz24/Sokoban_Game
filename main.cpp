@@ -46,7 +46,6 @@ int main() {
         l->movePlayer(movement);
 
         // Limpiar la consola antes de imprimir el nuevo estado del tablero
-        system("cls");
 
         l->printGrid();
         std::cout << std::endl;
