@@ -4,17 +4,18 @@
 #include "Data/List.h"
 
 int main() {
-    List* l = new List(1);
+    List *l = new List(1);
     l->printGrid();
     std::cout << std::endl;
 
     while (true) {
-        std::cout << "Presione una tecla (W: Arriba, S: Abajo, A: Izquierda, D: Derecha, Q: Salir): ";
+        std::cout << "Presione una tecla (W: Arriba, S: Abajo, A: Izquierda, D: Derecha, Q: Salir, R: Repetir): ";
 
         char mov = _getch(); // Utilizamos _getch() para capturar una tecla sin necesidad de presionar "Enter"
 
         if (mov == 'Q' || mov == 'q') {
             break; // Salir del ciclo si el usuario ingresa 'Q' o 'q'
+
         }
 
         Movement movement;
@@ -37,6 +38,13 @@ int main() {
             case 'd':
                 movement = RIGHT;
                 break;
+            case 'R':
+            case 'r':
+                l->resetLevel();
+                l->printGrid();
+                std::cout << std::endl;
+                break;
+
             default:
                 std::cout << "Tecla no válida. Por favor, ingrese W, S, A, D o Q." << std::endl;
                 continue; // Continuar al siguiente ciclo si la tecla no es válida
@@ -51,7 +59,7 @@ int main() {
         l->printGrid();
         if (l->goalStack.size() == l->numBoxes) {
             std::cout << "***¡Felicidades! Has ganado el juego.***" << std::endl;
-            system ("pause");
+            system("pause");
             break;
         }
         std::cout << std::endl;

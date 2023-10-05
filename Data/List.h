@@ -46,7 +46,7 @@ public:
     bool isBoxInPoint(Node* dirNode);
     void swapSymbols(Node*& node);
     char** getLevel(int level);
-
+    void resetLevel();
 
 
     // Otros métodos necesarios para la gestión de la matriz

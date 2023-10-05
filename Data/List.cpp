@@ -414,4 +414,22 @@ bool List::isBoxInPoint(Node *dirNode) {
     return false;
 }
 
+void List::resetLevel() {
+
+    List::~List(); // Liberar la memoria de los nodos enlazado
+
+    // Inicializar el número de filas y columnas
+    numRows = 0;
+    numCols = 0;
+    numBoxes= 0;
+    goalStack = std::stack<Node*>();
+    playerNode = nullptr;
+    head = nullptr;
+
+    // volver a crear la matriz a partir del archivo
+    char** mat = getLevel(1); //
+    createGrid(mat);
+
+}
+
 
