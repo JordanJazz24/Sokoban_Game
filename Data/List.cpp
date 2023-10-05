@@ -213,6 +213,7 @@ void List::movePlayer(Movement movement) {
                 if (isCellFree(playerNode->up->up)) {
                     playerNode->up->symbol = '.';
                     playerNode->up->up->symbol = '$';
+                    goalStack.pop(); // Desapilar el nodo de la pila de cajas en posición final
                     //mover al jugador
                     nextNode = playerNode->up;
                 }
@@ -250,6 +251,8 @@ void List::movePlayer(Movement movement) {
                 if (isCellFree(playerNode->down->down)) {
                     playerNode->down->symbol = '.';
                     playerNode->down->down->symbol = '$';
+                    goalStack.pop(); // Desapilar el nodo de la pila de cajas en posición final
+
                     //mover al jugador
                     nextNode = playerNode->down;
                 }
@@ -284,6 +287,8 @@ void List::movePlayer(Movement movement) {
                 if (isCellFree(playerNode->left->left)) {
                     playerNode->left->symbol = '.';
                     playerNode->left->left->symbol = '$';
+                    goalStack.pop(); // Desapilar el nodo de la pila de cajas en posición final
+
                     //mover al jugador
                     nextNode = playerNode->left;
                 }
@@ -319,6 +324,8 @@ void List::movePlayer(Movement movement) {
                 if (isCellFree(playerNode->right->right)) {
                     playerNode->right->symbol = '.';
                     playerNode->right->right->symbol = '$';
+                    goalStack.pop(); // Desapilar el nodo de la pila de cajas en posición final
+
                     //mover al jugador
                     nextNode = playerNode->right;
                 }
@@ -397,18 +404,6 @@ void List::swapSymbols(Node *&nextNode) {
     playerNode->symbol = nextNode->symbol;
     nextNode->symbol = temp;
     this->playerNode = nextNode;
-
-
-
-    // Verificar si todas las cajas están en la posición final para finalizar el nivel
-    if (goalStack.size() == numBoxes) { // Donde numBoxes es el número total de cajas en el nivel
-        // Aquí puedes agregar código para finalizar el nivel, por ejemplo, imprimir un mensaje de victoria.
-        cout << "¡Nivel completado!" << endl;
-        system("pause");
-        // También puedes reiniciar el nivel o realizar otras acciones según tus necesidades.
-    }
-
-
 
 }
 

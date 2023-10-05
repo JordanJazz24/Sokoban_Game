@@ -17,7 +17,7 @@ enum Movement{UP, DOWN, LEFT, RIGHT};
 
 using namespace std;
 class List {
-private:
+public:
     Node* head;      // Puntero al primer nodo (esquina superior izquierda) es mi grid
     Node* playerNode;
     bool playerInPoint = false;
@@ -33,6 +33,8 @@ public:
 
     // Métodos para acceder y manipular la matriz
     char getSymbol(int row, int col) const;
+
+
     void setSymbol(int row, int col, char symbol);
     bool isValidMove( Node* dirNode);
     void createGrid(char** mat) ;
@@ -44,6 +46,7 @@ public:
     bool isBoxInPoint(Node* dirNode);
     void swapSymbols(Node*& node);
     char** getLevel(int level);
+
 
 
     // Otros métodos necesarios para la gestión de la matriz

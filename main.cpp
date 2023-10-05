@@ -49,6 +49,11 @@ int main() {
         system("cls");
 
         l->printGrid();
+        if (l->goalStack.size() == l->numBoxes) {
+            std::cout << "***¡Felicidades! Has ganado el juego.***" << std::endl;
+            system ("pause");
+            break;
+        }
         std::cout << std::endl;
     }
 
