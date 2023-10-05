@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <stack>
 #include "Node.h"
 enum Movement{UP, DOWN, LEFT, RIGHT};
 
@@ -20,8 +21,11 @@ private:
     Node* head;      // Puntero al primer nodo (esquina superior izquierda) es mi grid
     Node* playerNode;
     bool playerInPoint = false;
+    int numBoxes;    // Número de cajas en el nivel
     int numRows;     // Número de filas en la matriz
     int numCols;     // Número de columnas en la matriz
+    std::stack<Node*> goalStack; // Pila para las cajas en la posición final
+
 
 public:
     List(int level);  // Constructor para inicializar la lista y la matriz

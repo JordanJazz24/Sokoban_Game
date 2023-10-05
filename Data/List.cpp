@@ -152,6 +152,11 @@ void List::createGrid(char** mat) {
                 this->playerNode = temp;
             }
 
+            if (mat[i][j] == '$') {
+                // Si encontramos el caracter de una caja, incrementamos el número de cajas
+                this->numBoxes++;
+            }
+
             if (j == 0) head_row = temp; // Si es la primera columna, establecer como cabeza de fila
             if (i == 0 && j == 0) head_main = temp; // Si es la primera celda, establecer como cabeza principal
 
@@ -199,6 +204,7 @@ void List::movePlayer(Movement movement) {
                 if (isCellGoal(playerNode->up->up)) {
                     playerNode->up->symbol = ' ';
                     playerNode->up->up->symbol = '!';
+                    goalStack.push(playerNode->up->up); // Apilar el nodo en la pila de cajas en posición final
                     //mover al jugador
                     nextNode = playerNode->up;
                 }
@@ -211,8 +217,11 @@ void List::movePlayer(Movement movement) {
                     nextNode = playerNode->up;
                 }
                 if (isCellGoal(playerNode->up->up)) {
+                    // Verificar si nextNode es una caja en una posición final
                     playerNode->up->symbol = '.';
                     playerNode->up->up->symbol = '!';
+                    goalStack.push(playerNode->up->up); // Apilar el nodo en la pila de cajas en posición final
+
                     //mover al jugador
                     nextNode = playerNode->up;
                 }
@@ -388,6 +397,19 @@ void List::swapSymbols(Node *&nextNode) {
     playerNode->symbol = nextNode->symbol;
     nextNode->symbol = temp;
     this->playerNode = nextNode;
+
+
+
+    // Verificar si todas las cajas están en la posición final para finalizar el nivel
+    if (goalStack.size() == numBoxes) { // Donde numBoxes es el número total de cajas en el nivel
+        // Aquí puedes agregar código para finalizar el nivel, por ejemplo, imprimir un mensaje de victoria.
+        cout << "¡Nivel completado!" << endl;
+        system("pause");
+        // También puedes reiniciar el nivel o realizar otras acciones según tus necesidades.
+    }
+
+
+
 }
 
 bool List::isBoxInPoint(Node *dirNode) {
