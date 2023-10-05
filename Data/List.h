@@ -7,9 +7,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #include <sstream>
+#include <vector>
 #include "Node.h"
 enum Movement{UP, DOWN, LEFT, RIGHT};
 
@@ -19,8 +20,6 @@ private:
     Node* head;      // Puntero al primer nodo (esquina superior izquierda) es mi grid
     Node* playerNode;
     bool playerInPoint = false;
-    vector<Node*> boxes;
-    vector<Node*> points;
     int numRows;     // Número de filas en la matriz
     int numCols;     // Número de columnas en la matriz
 
@@ -38,6 +37,7 @@ public:
     bool isCellFree(Node* dirNode);
     bool isCellGoal(Node* dirNode);
     bool isCellBox(Node* dirNode);
+    bool isBoxInPoint(Node* dirNode);
     void swapSymbols(Node*& node);
     char** getLevel(int level);
 

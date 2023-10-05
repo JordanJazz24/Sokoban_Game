@@ -6,7 +6,8 @@
 #define PROYECTO_SOKOBAN_NODE_H
 
 
-struct Node {
+class Node {
+public:
     char symbol;  // Símbolo que representa el contenido del nodo
     Node* up;     // Puntero al nodo superior
     Node* down;   // Puntero al nodo inferior
