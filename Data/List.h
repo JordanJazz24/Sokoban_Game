@@ -24,7 +24,7 @@ public:
     int numBoxes;    // Número de cajas en el nivel
     int numRows;     // Número de filas en la matriz
     int numCols;     // Número de columnas en la matriz
-    std::stack<Node*> goalStack; // Pila para las cajas en la posición final
+    std::stack<Node*> *goalStack; // Pila para las cajas en la posición final
 
 
 public:
@@ -46,7 +46,7 @@ public:
     bool isBoxInPoint(Node* dirNode);
     void swapSymbols(Node*& node);
     char** getLevel(int level);
-    void resetLevel();
+    void resetLevel(int level);
 
 
     // Otros métodos necesarios para la gestión de la matriz

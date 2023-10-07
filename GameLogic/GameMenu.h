@@ -100,7 +100,7 @@ private:
                     break;
                 case 'R':
                 case 'r':
-                    game->resetLevel();
+                    game->resetLevel(currentLevel);
                     break;
                 default:
                     std::cout << "Tecla no válida. Por favor, ingrese W, S, A, D, R o Q." << std::endl;
@@ -113,7 +113,7 @@ private:
             game->movePlayer(movement);
 
             system ("cls");
-            if (game->goalStack.size() == game->numBoxes) {
+            if (game->goalStack->size() == game->numBoxes) {
                 game->printGrid();
                 std::cout << "***¡Felicidades! Has ganado el nivel " << currentLevel << ".***" << std::endl;
                 if (currentLevel >= 3) {

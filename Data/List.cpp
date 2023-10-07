@@ -10,7 +10,7 @@ List::List(int level) : head(nullptr) {
     numRows = 0;
     numCols = 0;
     numBoxes= 0;
-    goalStack = std::stack<Node*>();
+    goalStack = new std::stack<Node*>();
     playerNode = nullptr;
     head = nullptr;
     // Crear la matriz a partir del archivo
@@ -190,7 +190,7 @@ void List::movePlayer(Movement movement) {
     Node* nextNode = nullptr;
 
     // Determinar el nodo en la dirección deseada
-        switch (movement) {
+    switch (movement) {
         case UP:
             if (isValidMove(playerNode->up)) { //si el movimiento es válido
                 nextNode = playerNode->up;
@@ -206,7 +206,7 @@ void List::movePlayer(Movement movement) {
                 if (isCellGoal(playerNode->up->up)) {
                     playerNode->up->symbol = ' ';
                     playerNode->up->up->symbol = '!';
-                    goalStack.push(playerNode->up->up); // Apilar el nodo en la pila de cajas en posición final
+                    goalStack->push(playerNode->up->up); // Apilar el nodo en la pila de cajas en posición final
                     //mover al jugador
                     nextNode = playerNode->up;
                 }
@@ -215,8 +215,8 @@ void List::movePlayer(Movement movement) {
                 if (isCellFree(playerNode->up->up)) {
                     playerNode->up->symbol = '.';
                     playerNode->up->up->symbol = '$';
-                    if (goalStack.size() > 0) {
-                        goalStack.pop(); // Desapilar el nodo de la pila de cajas en posición final
+                    if (goalStack->size() > 0) {
+                        goalStack->pop(); // Desapilar el nodo de la pila de cajas en posición final
                     }
                     //mover al jugador
                     nextNode = playerNode->up;
@@ -248,7 +248,7 @@ void List::movePlayer(Movement movement) {
                 if (isCellGoal(playerNode->down->down)) {
                     playerNode->down->symbol = ' ';
                     playerNode->down->down->symbol = '!';
-                    goalStack.push(playerNode->down->down); // Apilar el nodo en la pila de cajas en posición final
+                    goalStack->push(playerNode->down->down); // Apilar el nodo en la pila de cajas en posición final
                     //mover al jugador
                     nextNode = playerNode->down;
                 }
@@ -257,8 +257,8 @@ void List::movePlayer(Movement movement) {
                 if (isCellFree(playerNode->down->down)) {
                     playerNode->down->symbol = '.';
                     playerNode->down->down->symbol = '$';
-                    if (goalStack.size() > 0) {
-                        goalStack.pop(); // Desapilar el nodo de la pila de cajas en posición final
+                    if (goalStack->size() > 0) {
+                        goalStack->pop(); // Desapilar el nodo de la pila de cajas en posición final
                     }
 
                     //mover al jugador
@@ -289,7 +289,7 @@ void List::movePlayer(Movement movement) {
                 if  (isCellGoal(playerNode->left->left)) {
                     playerNode->left->symbol = ' ';
                     playerNode->left->left->symbol = '!';
-                    goalStack.push(playerNode->left->left); // Apilar el nodo en la pila de cajas en posición final
+                    goalStack->push(playerNode->left->left); // Apilar el nodo en la pila de cajas en posición final
                     //mover al jugador
                     nextNode = playerNode->left;
                 }
@@ -298,8 +298,8 @@ void List::movePlayer(Movement movement) {
                 if (isCellFree(playerNode->left->left)) {
                     playerNode->left->symbol = '.';
                     playerNode->left->left->symbol = '$';
-                    if (goalStack.size() > 0) {
-                        goalStack.pop(); // Desapilar el nodo de la pila de cajas en posición final
+                    if (goalStack->size() > 0) {
+                        goalStack->pop(); // Desapilar el nodo de la pila de cajas en posición final
                     }
                     //mover al jugador
                     nextNode = playerNode->left;
@@ -330,7 +330,7 @@ void List::movePlayer(Movement movement) {
                 if (isCellGoal(playerNode->right->right)) {
                     playerNode->right->symbol = ' ';
                     playerNode->right->right->symbol = '!';
-                    goalStack.push(playerNode->right->right); // Apilar el nodo en la pila de cajas en posición final
+                    goalStack->push(playerNode->right->right); // Apilar el nodo en la pila de cajas en posición final
                     //mover al jugador
                     nextNode = playerNode->right;
                 }
@@ -339,8 +339,8 @@ void List::movePlayer(Movement movement) {
                 if (isCellFree(playerNode->right->right)) {
                     playerNode->right->symbol = '.';
                     playerNode->right->right->symbol = '$';
-                    if (goalStack.size() > 0) {
-                        goalStack.pop(); // Desapilar el nodo de la pila de cajas en posición final
+                    if (goalStack->size() > 0) {
+                        goalStack->pop(); // Desapilar el nodo de la pila de cajas en posición final
                     }
 
                     //mover al jugador
@@ -366,11 +366,11 @@ void List::movePlayer(Movement movement) {
 
 
         if(isCellGoal(nextNode)){
-          if(playerInPoint){ //si el jugador ya estaba en un punto y se mueve a otro punto
+            if(playerInPoint){ //si el jugador ya estaba en un punto y se mueve a otro punto
                 nextNode->symbol = '.';
                 swapSymbols(nextNode);
                 return;
-          }
+            }
             playerInPoint = true;
             nextNode->symbol = ' ';
             swapSymbols(nextNode);
@@ -433,7 +433,7 @@ bool List::isBoxInPoint(Node *dirNode) {
     return false;
 }
 
-void List::resetLevel() {
+void List::resetLevel(int level) {
 
     List::~List(); // Liberar la memoria de los nodos enlazado
 
@@ -441,12 +441,12 @@ void List::resetLevel() {
     numRows = 0;
     numCols = 0;
     numBoxes= 0;
-    goalStack = std::stack<Node*>();
+    goalStack = new std::stack<Node*>();
     playerNode = nullptr;
     head = nullptr;
 
     // volver a crear la matriz a partir del archivo
-    char** mat = getLevel(1); //
+    char** mat = getLevel(level); //
     createGrid(mat);
 
 }
