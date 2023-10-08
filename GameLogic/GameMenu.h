@@ -1,6 +1,9 @@
 #include <iostream>
 #include <Windows.h>
 #include <conio.h> // Para _getch()
+#include "SDL.h"
+#include <SDL_mixer.h>
+
 #include "../Data/List.h"
 struct ReplayMove {
     Movement movement;
@@ -24,7 +27,7 @@ public:
                     startNewGame(currentLevel);
                     break;
                 case '2': // Cargar partida (debes implementar esta funcionalidad)
-                    std::cout << "Funcionalidad de carga de partida no implementada todavía." << std::endl;
+                    loadGame();
                     break;
                 case '3': // Salir del juego
                     if (game != nullptr) {
@@ -83,8 +86,7 @@ private:
             game->printGrid();
             std::cout << std::endl;
 
-            std::cout << "Presione una tecla (W: Arriba, S: Abajo, A: Izquierda, D: Derecha, Q: Salir, R: Repetir): \n";
-
+            std::cout << "Presione una tecla (W: Arriba, S: Abajo, A: Izquierda, D: Derecha, Q: Salir, R: Repetir, G: Guardar partida): \n";
             char mov = _getch(); // Utilizamos _getch() para capturar una tecla sin necesidad de presionar "Enter"
 
             if (mov == 'Q' || mov == 'q') {
@@ -93,6 +95,14 @@ private:
                 break; // Salir del juego
             }
 
+            if (mov == 'G' || mov == 'g') {
+                saveGame(); // Guardar la partida
+                system("cls");
+                std::cout << "Partida guardada. Presione Enter para continuar." << std::endl;
+                _getch();
+                system("cls");
+                continue;
+            }
             Movement movement;
 
             // Convertir la tecla ingresada en un movimiento válido
@@ -150,7 +160,6 @@ private:
                 std::cout << "***¡Felicidades! Has ganado el nivel " << currentLevel << ".***" << std::endl;
                 if (currentLevel >= 3) {
                     std::cout << "¡Completaste todos los niveles, sos el puto amo lml !" << std::endl;
-                    system("pause");
                     std::cout << "Presione Enter para continuar al reiniciar el juego o 'R' para ver la repeticion del ultimo nivel: \n";
                     system("pause");
                 }else {
@@ -208,11 +217,63 @@ private:
                     movements->clear();
                     system ("cls");
                     startNewGame(currentLevel); }// Crear una nueva instancia del juego
-            }
+            }//
             std::cout << std::endl;
         }
     }
 
+    void saveGame() {
+        // Abrir el archivo de guardado en modo escritura (esto lo creará o sobrescribirá)
+        std::ofstream saveFile("partida.txt", std::ios::trunc);
+
+        if (saveFile.is_open()) {
+            // Guardar el nivel actual en el archivo
+            saveFile << currentLevel << std::endl;
+
+            // Guardar la lista de movimientos en el archivo
+            for (const Movement& movement : *movements) {
+                saveFile << static_cast<int>(movement) << " ";
+            }
+
+            saveFile.close();
+
+            std::cout << "Partida guardada exitosamente." << std::endl;
+        } else {
+            std::cout << "Error al guardar la partida." << std::endl;
+        }
+    }
+
+
+    void loadGame() {
+        // Abrir el archivo de guardado en modo lectura
+        std::ifstream saveFile("partida.txt");
+
+        if (saveFile.is_open()) {
+            // Leer el nivel actual desde el archivo
+            saveFile >> currentLevel;
+
+            // Limpiar la lista de movimientos
+            movements->clear();
+
+            // Leer la lista de movimientos desde el archivo
+            int movement;
+            while (saveFile >> movement) {
+                movements->push_back(static_cast<Movement>(movement));
+            }
+
+            saveFile.close();
+
+            // Crear una nueva instancia del juego con el nivel cargado
+            startNewGame(currentLevel);
+            for (int i = 0; i < movements->size(); ++i) {
+                game->movePlayer(movements->at(i));
+            }
+
+            std::cout << "Partida cargada exitosamente." << std::endl;
+        } else {
+            std::cout << "No se encontró una partida guardada." << std::endl;
+        }
+    }
 
 
 };
