@@ -3,13 +3,58 @@
 **Autor:** [JordanJazz24](https://github.com/JordanJazz24)  
 **Repositorio:** [Sokoban_Game](https://github.com/JordanJazz24/Sokoban_Game)  
 **Lenguaje Principal:** C++  
-**Estado:** En desarrollo
+**Estado:** Completamente funcional
 
 ---
 
-## Descripción
+## 🎮 Descripción
 
-Sokoban_Game es una implementación en C++ del clásico juego de lógica Sokoban. El objetivo del juego es mover todas las cajas a sus posiciones objetivo utilizando la menor cantidad de movimientos posible, en un entorno de consola. La arquitectura del proyecto está diseñada para ser escalable y eficiente, utilizando estructuras de datos enlazadas para la representación de los niveles y la lógica del juego.
+Sokoban_Game es una implementación completa en C++ del clásico juego de lógica Sokoban. El objetivo del juego es mover todas las cajas a sus posiciones objetivo utilizando la menor cantidad de movimientos posible. La arquitectura del proyecto está diseñada para ser escalable y eficiente, utilizando estructuras de datos enlazadas para la representación de los niveles y la lógica del juego.
+
+---
+
+## 🚀 Instalación y Configuración Rápida
+
+### Requisitos Previos:
+- **VS Code** con las extensiones:
+  - C/C++ Extension Pack
+  - CMake Tools (opcional pero recomendado)
+- **CMake** (versión 3.10 o superior)
+- **MinGW-w64** o cualquier compilador compatible con C++17
+
+### 🔧 Configuración Automática para Desarrolladores:
+
+**¡El proyecto está completamente configurado!** Solo necesitas:
+
+1. **Abrir el proyecto en VS Code**
+2. **Usar los comandos predefinidos:**
+
+#### Método 1: Usando la Paleta de Comandos (Ctrl+Shift+P)
+```
+> Tasks: Run Task
+> CMake: Build        # Compilar el proyecto
+> Full Setup and Run  # Compilar y ejecutar automáticamente
+```
+
+#### Método 2: Usando atajos de teclado
+- **Ctrl+Shift+P** → "Tasks: Run Build Task" (Compilar)
+- **F5** → Ejecutar con depurador
+- **Ctrl+F5** → Ejecutar sin depurador
+
+#### Método 3: Terminal integrado
+```bash
+# Configurar proyecto
+cmake -G "MinGW Makefiles" -B build -S .
+
+# Compilar
+cmake --build build
+
+# Copiar archivos de niveles
+powershell -Command "Copy-Item 'Nivel*.txt' 'build/' -Force"
+
+# Ejecutar
+./build/Sokoban_Game.exe
+```
 
 ---
 

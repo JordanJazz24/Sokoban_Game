@@ -1,14 +1,16 @@
 #include <iostream>
 #include <Windows.h>
 #include <conio.h> // Para _getch()
-#include "SDL.h"
-#include <SDL_mixer.h>
+#include <fstream>
+#include <vector>
 
 #include "../Data/List.h"
 struct ReplayMove {
     Movement movement;
     // Agrega cualquier otra información necesaria aquí
 };
+
+using namespace std;
 
 class GameMenu {
 public:

@@ -1,0 +1,3 @@
+D:/Program Files/GitHub Repos/Sokoban_Game/build/CMakeFiles/Sokoban_Game.dir
+D:/Program Files/GitHub Repos/Sokoban_Game/build/CMakeFiles/edit_cache.dir
+D:/Program Files/GitHub Repos/Sokoban_Game/build/CMakeFiles/rebuild_cache.dir

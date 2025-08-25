@@ -46,6 +46,7 @@ public:
     bool isBoxInPoint(Node* dirNode);
     void swapSymbols(Node*& node);
     char** getLevel(int level);
+    void freeMatrix(char** mat);
 
     void resetLevel(int level);
 

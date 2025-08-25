@@ -16,10 +16,11 @@ List::List(int level) : head(nullptr) {
     // Crear la matriz a partir del archivo
     char** mat = getLevel(level); //
     createGrid(mat);
+    freeMatrix(mat); // Liberar la memoria de la matriz temporal
 }
 
 List::~List() {
-    // Liberar la memoria de los nodos enlazados // no he revisado si funciona al 100
+    // Liberar la memoria de los nodos enlazados
     Node* current = head;
     while (current) {
         Node* next = current->right;
@@ -31,6 +32,9 @@ List::~List() {
         }
         current = next;
     }
+    
+    // Liberar la pila de objetivos
+    delete goalStack;
 }
 
 char List::getSymbol(int row, int col) const {
@@ -434,10 +438,23 @@ bool List::isBoxInPoint(Node *dirNode) {
 }
 
 void List::resetLevel(int level) {
+    // Liberar la memoria de los nodos enlazados
+    Node* current = head;
+    while (current) {
+        Node* next = current->right;
+        Node* rowNode = current;
+        while (rowNode) {
+            Node* toDelete = rowNode;
+            rowNode = rowNode->down;
+            delete toDelete;
+        }
+        current = next;
+    }
 
-    List::~List(); // Liberar la memoria de los nodos enlazado
+    // Limpiar la pila de objetivos
+    delete goalStack;
 
-    // Inicializar el número de filas y columnas
+    // Reinicializar el número de filas y columnas
     numRows = 0;
     numCols = 0;
     numBoxes= 0;
@@ -448,7 +465,16 @@ void List::resetLevel(int level) {
     // volver a crear la matriz a partir del archivo
     char** mat = getLevel(level); //
     createGrid(mat);
+    freeMatrix(mat); // Liberar la memoria de la matriz temporal
+}
 
+void List::freeMatrix(char** mat) {
+    if (mat != nullptr) {
+        for (int i = 0; i < numRows; i++) {
+            delete[] mat[i];
+        }
+        delete[] mat;
+    }
 }
 
 
