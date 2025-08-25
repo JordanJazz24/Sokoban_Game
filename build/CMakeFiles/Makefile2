@@ -84,12 +84,12 @@ clean: CMakeFiles/Sokoban_Game.dir/clean
 CMakeFiles/Sokoban_Game.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=1,2,3 "Built target Sokoban_Game"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=1,2,3,4,5,6 "Built target Sokoban_Game"
 .PHONY : CMakeFiles/Sokoban_Game.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Sokoban_Game.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" 3
+	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Sokoban_Game.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" 0
 .PHONY : CMakeFiles/Sokoban_Game.dir/rule
@@ -101,7 +101,7 @@ Sokoban_Game: CMakeFiles/Sokoban_Game.dir/rule
 # codegen rule for target.
 CMakeFiles/Sokoban_Game.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=1,2,3 "Finished codegen for target Sokoban_Game"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=1,2,3,4,5,6 "Finished codegen for target Sokoban_Game"
 .PHONY : CMakeFiles/Sokoban_Game.dir/codegen
 
 # clean rule for target.

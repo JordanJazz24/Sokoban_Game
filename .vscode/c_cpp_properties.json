@@ -3,14 +3,15 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/Data",
-                "${workspaceFolder}/GameLogic"
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/src/game",
+                "${workspaceFolder}/src/utils"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "_CRT_SECURE_NO_WARNINGS"
             ],
             "compilerPath": "c:\\MinGW\\bin\\g++.exe",
             "cStandard": "c17",

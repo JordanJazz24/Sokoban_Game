@@ -20,7 +20,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "CMake: Build and Setup"
+            "preLaunchTask": "CMake: Build"
         },
         {
             "name": "Run Sokoban Game",
@@ -34,7 +34,7 @@
             "externalConsole": true,
             "MIMode": "gdb",
             "miDebuggerPath": "c:\\MinGW\\bin\\gdb.exe",
-            "preLaunchTask": "CMake: Build and Setup"
+            "preLaunchTask": "CMake: Build"
         }
     ]
 }

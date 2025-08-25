@@ -63,44 +63,6 @@
             "detail": "Limpiar archivos de compilación"
         },
         {
-            "label": "Setup: Copy Level Files",
-            "type": "shell",
-            "command": "powershell",
-            "args": [
-                "-Command",
-                "Copy-Item 'Nivel*.txt' 'build/' -Force"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "silent",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": [],
-            "detail": "Copiar archivos de niveles al directorio build"
-        },
-        {
-            "label": "CMake: Build and Setup",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "CMake: Build",
-                "Setup: Copy Level Files"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": false
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": [],
-            "detail": "Compilar el proyecto y preparar archivos necesarios"
-        },
-        {
             "label": "Run: Sokoban Game",
             "type": "shell",
             "command": "${workspaceFolder}/build/Sokoban_Game.exe",
@@ -113,44 +75,7 @@
             },
             "problemMatcher": [],
             "detail": "Ejecutar el juego Sokoban",
-            "dependsOn": "CMake: Build and Setup"
-        },
-        {
-            "label": "Full Setup and Run",
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "CMake: Build and Setup",
-                "Run: Sokoban Game"
-            ],
-            "group": "test",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated"
-            },
-            "problemMatcher": [],
-            "detail": "Configurar, compilar y ejecutar el juego completo"
-        },
-        {
-            "type": "cppbuild",
-            "label": "C/C++: g++.exe build active file (Legacy)",
-            "command": "c:\\MinGW\\bin\\g++.exe",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
-            ],
-            "options": {
-                "cwd": "c:\\MinGW\\bin"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": "build",
-            "detail": "Compilación directa con g++ (para archivos individuales)"
+            "dependsOn": "CMake: Build"
         }
     ]
 }

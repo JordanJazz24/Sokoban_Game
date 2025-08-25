@@ -128,53 +128,125 @@ Sokoban_Game/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/build
 .PHONY : Sokoban_Game/fast
 
-Data/List.obj: Data/List.cpp.obj
-.PHONY : Data/List.obj
+src/game/Game.obj: src/game/Game.cpp.obj
+.PHONY : src/game/Game.obj
 
 # target to build an object file
-Data/List.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/Data/List.cpp.obj
-.PHONY : Data/List.cpp.obj
+src/game/Game.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.obj
+.PHONY : src/game/Game.cpp.obj
 
-Data/List.i: Data/List.cpp.i
-.PHONY : Data/List.i
+src/game/Game.i: src/game/Game.cpp.i
+.PHONY : src/game/Game.i
 
 # target to preprocess a source file
-Data/List.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/Data/List.cpp.i
-.PHONY : Data/List.cpp.i
+src/game/Game.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.i
+.PHONY : src/game/Game.cpp.i
 
-Data/List.s: Data/List.cpp.s
-.PHONY : Data/List.s
+src/game/Game.s: src/game/Game.cpp.s
+.PHONY : src/game/Game.s
 
 # target to generate assembly for a file
-Data/List.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/Data/List.cpp.s
-.PHONY : Data/List.cpp.s
+src/game/Game.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.s
+.PHONY : src/game/Game.cpp.s
 
-main.obj: main.cpp.obj
-.PHONY : main.obj
+src/game/Grid.obj: src/game/Grid.cpp.obj
+.PHONY : src/game/Grid.obj
 
 # target to build an object file
-main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/main.cpp.obj
-.PHONY : main.cpp.obj
+src/game/Grid.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj
+.PHONY : src/game/Grid.cpp.obj
 
-main.i: main.cpp.i
-.PHONY : main.i
+src/game/Grid.i: src/game/Grid.cpp.i
+.PHONY : src/game/Grid.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/game/Grid.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.i
+.PHONY : src/game/Grid.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+src/game/Grid.s: src/game/Grid.cpp.s
+.PHONY : src/game/Grid.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/game/Grid.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.s
+.PHONY : src/game/Grid.cpp.s
+
+src/game/Level.obj: src/game/Level.cpp.obj
+.PHONY : src/game/Level.obj
+
+# target to build an object file
+src/game/Level.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj
+.PHONY : src/game/Level.cpp.obj
+
+src/game/Level.i: src/game/Level.cpp.i
+.PHONY : src/game/Level.i
+
+# target to preprocess a source file
+src/game/Level.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.i
+.PHONY : src/game/Level.cpp.i
+
+src/game/Level.s: src/game/Level.cpp.s
+.PHONY : src/game/Level.s
+
+# target to generate assembly for a file
+src/game/Level.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.s
+.PHONY : src/game/Level.cpp.s
+
+src/main.obj: src/main.cpp.obj
+.PHONY : src/main.obj
+
+# target to build an object file
+src/main.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/main.cpp.obj
+.PHONY : src/main.cpp.obj
+
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
+
+src/utils/FileManager.obj: src/utils/FileManager.cpp.obj
+.PHONY : src/utils/FileManager.obj
+
+# target to build an object file
+src/utils/FileManager.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj
+.PHONY : src/utils/FileManager.cpp.obj
+
+src/utils/FileManager.i: src/utils/FileManager.cpp.i
+.PHONY : src/utils/FileManager.i
+
+# target to preprocess a source file
+src/utils/FileManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.i
+.PHONY : src/utils/FileManager.cpp.i
+
+src/utils/FileManager.s: src/utils/FileManager.cpp.s
+.PHONY : src/utils/FileManager.s
+
+# target to generate assembly for a file
+src/utils/FileManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Sokoban_Game.dir\build.make CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.s
+.PHONY : src/utils/FileManager.cpp.s
 
 # Help Target
 help:
@@ -185,12 +257,21 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Sokoban_Game
-	@echo ... Data/List.obj
-	@echo ... Data/List.i
-	@echo ... Data/List.s
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
+	@echo ... src/game/Game.obj
+	@echo ... src/game/Game.i
+	@echo ... src/game/Game.s
+	@echo ... src/game/Grid.obj
+	@echo ... src/game/Grid.i
+	@echo ... src/game/Grid.s
+	@echo ... src/game/Level.obj
+	@echo ... src/game/Level.i
+	@echo ... src/game/Level.s
+	@echo ... src/main.obj
+	@echo ... src/main.i
+	@echo ... src/main.s
+	@echo ... src/utils/FileManager.obj
+	@echo ... src/utils/FileManager.i
+	@echo ... src/utils/FileManager.s
 .PHONY : help
 
 

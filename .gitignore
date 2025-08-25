@@ -1,2 +1,52 @@
-# Project exclude paths
-/cmake-build-debug/
+# Build directories
+build/
+cmake-build-*/
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# IDE files
+.vs/
+.vscode/settings.json
+*.vcxproj*
+*.sln
+*.user
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Debug files
+*.pdb
+*.ilk
+
+# Saved games (keep directory structure)
+assets/saves/*.txt
+!assets/saves/.gitkeep
+
+# Log files
+*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.orig
+
+# MinGW specific
+mingw/

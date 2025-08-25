@@ -1,157 +1,157 @@
-# Sokoban_Game
+# 🎮 Sokoban Game - Refactorizado
 
 **Autor:** [JordanJazz24](https://github.com/JordanJazz24)  
-**Repositorio:** [Sokoban_Game](https://github.com/JordanJazz24/Sokoban_Game)  
-**Lenguaje Principal:** C++  
-**Estado:** Completamente funcional
+**Versión:** 2.0.0 (Refactorizado)  
+**Estado:** ✅ Completamente funcional  
 
 ---
 
-## 🎮 Descripción
+## 🚀 **¡Proyecto completamente refactorizado!**
 
-Sokoban_Game es una implementación completa en C++ del clásico juego de lógica Sokoban. El objetivo del juego es mover todas las cajas a sus posiciones objetivo utilizando la menor cantidad de movimientos posible. La arquitectura del proyecto está diseñada para ser escalable y eficiente, utilizando estructuras de datos enlazadas para la representación de los niveles y la lógica del juego.
+Este proyecto ha sido **completamente reorganizado** aplicando principios de ingeniería de software y buenas prácticas de programación.
 
----
-
-## 🚀 Instalación y Configuración Rápida
-
-### Requisitos Previos:
-- **VS Code** con las extensiones:
-  - C/C++ Extension Pack
-  - CMake Tools (opcional pero recomendado)
-- **CMake** (versión 3.10 o superior)
-- **MinGW-w64** o cualquier compilador compatible con C++17
-
-### 🔧 Configuración Automática para Desarrolladores:
-
-**¡El proyecto está completamente configurado!** Solo necesitas:
-
-1. **Abrir el proyecto en VS Code**
-2. **Usar los comandos predefinidos:**
-
-#### Método 1: Usando la Paleta de Comandos (Ctrl+Shift+P)
-```
-> Tasks: Run Task
-> CMake: Build        # Compilar el proyecto
-> Full Setup and Run  # Compilar y ejecutar automáticamente
-```
-
-#### Método 2: Usando atajos de teclado
-- **Ctrl+Shift+P** → "Tasks: Run Build Task" (Compilar)
-- **F5** → Ejecutar con depurador
-- **Ctrl+F5** → Ejecutar sin depurador
-
-#### Método 3: Terminal integrado
-```bash
-# Configurar proyecto
-cmake -G "MinGW Makefiles" -B build -S .
-
-# Compilar
-cmake --build build
-
-# Copiar archivos de niveles
-powershell -Command "Copy-Item 'Nivel*.txt' 'build/' -Force"
-
-# Ejecutar
-./build/Sokoban_Game.exe
-```
-
----
-
-## Características principales
-
-- **Lectura dinámica de niveles:**  
-  Permite cargar distintos niveles desde archivos de texto externos (por ejemplo, `Nivel 1.txt`, `Nivel 2.txt`), facilitando la expansión y personalización de desafíos.
-- **Implementación modular:**  
-  Separación clara entre lógica del juego (`GameLogic`), estructuras de datos (`Data`), y entrada/salida.
-- **Gestión eficiente de memoria:**  
-  Uso de listas enlazadas y punteros inteligentes para representar la grilla del juego y los elementos interactivos.
-- **Lógica de movimientos y validaciones:**  
-  Métodos robustos para validar y ejecutar movimientos del jugador y las cajas, incluyendo detección de colisiones y condiciones de victoria.
-- **Soporte para reinicio de nivel y múltiples niveles:**  
-  Función para reiniciar el nivel actual y avanzar a nuevos desafíos fácilmente.
-- **Diseño extensible:**  
-  Preparado para añadir nuevas funcionalidades, como almacenamiento de récords, más niveles o interfaz gráfica.
-
----
-
-## Estructura del proyecto
+### 📁 **Nueva Estructura Profesional:**
 
 ```
 Sokoban_Game/
-├── main.cpp
-├── Data/
-│   ├── List.cpp     # Implementación de la grilla y la lógica de movimiento
-│   ├── List.h
-│   └── Node.h       # Definición de nodos enlazados
-├── GameLogic/
-│   └── GameMenu.h   # Lógica de menú y gestión de partidas
-├── Nivel 1.txt      # Ejemplo de nivel jugable
-├── Nivel 2.txt      # Otro nivel jugable
-└── CMakeLists.txt   # Archivo de configuración CMake
+├── 📁 src/                          # Código fuente
+│   ├── main.cpp                     # Punto de entrada
+│   ├── 📁 game/                     # Lógica del juego
+│   │   ├── Game.h/.cpp             # Coordinador principal
+│   │   ├── Level.h/.cpp            # Manejo de niveles
+│   │   └── Grid.h/.cpp             # Grid del juego (ex-List)
+│   └── 📁 utils/                    # Utilidades
+│       ├── Types.h                 # Tipos y enumeraciones
+│       ├── Constants.h             # Constantes del juego
+│       └── FileManager.h/.cpp      # Manejo de archivos
+├── 📁 assets/                       # Recursos
+│   ├── levels/                     # Niveles del juego
+│   │   ├── level_01.txt
+│   │   ├── level_02.txt
+│   │   └── level_03.txt
+│   └── saves/                      # Partidas guardadas
+├── 📁 scripts/                      # Scripts de automatización
+├── 📁 docs/                         # Documentación
+├── 📁 build/                        # Archivos de compilación
+├── 📁 .vscode/                      # Configuración VS Code
+└── CMakeLists.txt                   # Configuración CMake moderna
 ```
 
 ---
 
-## Instrucciones de uso
+## 🔧 **Principios Aplicados:**
 
-1. **Compilación del proyecto:**
-   - Asegúrate de tener CMake y un compilador de C++ compatible (C++17 o superior).
-   - Clona el repositorio y ejecuta:
-     ```bash
-     mkdir build
-     cd build
-     cmake ..
-     make
-     ```
+### **SOLID Principles:**
+- **✅ Single Responsibility:** Cada clase tiene una responsabilidad específica
+- **✅ Open/Closed:** Extensible sin modificar código existente
+- **✅ Liskov Substitution:** Jerarquías bien definidas
+- **✅ Interface Segregation:** Interfaces específicas y cohesivas
+- **✅ Dependency Inversion:** Dependencias hacia abstracciones
 
-2. **Ubicación de archivos de nivel:**
-   - Mueve los archivos de nivel (`Nivel 1.txt`, `Nivel 2.txt`, etc.) dentro de la carpeta de salida, por ejemplo:  
-     `...\Sokoban_Game\cmake-build-debug`
-   - Esto es necesario para que el juego lea los niveles correctamente.
-
-3. **Ejecución:**
-   - Ejecuta el binario generado, normalmente:
-     ```bash
-     ./Sokoban_Game
-     ```
+### **Buenas Prácticas:**
+- **✅ Separación de responsabilidades**
+- **✅ Encapsulación apropiada**
+- **✅ Gestión automática de memoria**
+- **✅ Documentación completa con Doxygen**
+- **✅ Estructura de carpetas profesional**
+- **✅ Configuración automática de assets**
 
 ---
 
-## Ejemplo de formato de nivel
+## 🚀 **Compilación y Ejecución:**
 
-Un nivel es un archivo de texto donde:
+### **Método Rápido (VS Code):**
+1. Abrir el proyecto en VS Code
+2. **F5** o **Ctrl+Shift+P** → "Tasks: Run Build Task"
+3. ¡Listo! El juego se compila y ejecuta automáticamente
 
-- `#` representa una pared
-- `@` representa al jugador
-- `$` representa una caja
-- `.` representa un objetivo
-- Espacio en blanco es una celda vacía
+### **Método Terminal:**
+```bash
+# Configurar y compilar
+mkdir build && cd build
+cmake -G "MinGW Makefiles" ..
+cmake --build .
 
-Ejemplo (`Nivel 1.txt`):
+# Ejecutar (assets se copian automáticamente)
+./Sokoban_Game.exe
 ```
-######################
-#          #        ##
-#  $   .    #  $     #
-#     $.    #       ##
-####   @         #####
-   ######   . . #
-        ########
+
+### **Scripts Automatizados:**
+```bash
+# Desde el directorio raíz:
+scripts/setup_and_run.bat  # Compilar y ejecutar todo automáticamente
 ```
 
 ---
 
-## Extensión y personalización
+## 🎯 **Mejoras Implementadas:**
 
-Puedes crear tus propios niveles siguiendo el formato anterior y agregándolos como `Nivel N.txt`.  
-Para añadir nuevas mecánicas o interfaz gráfica, expande la lógica en `GameLogic/GameMenu.h` y las estructuras en `Data/List.h`.
+### **Arquitectura:**
+- **Modularización completa** del código
+- **Separación clara** entre lógica de juego, UI y datos
+- **Gestión inteligente de archivos** con múltiples rutas de búsqueda
+- **Sistema robusto** de manejo de errores
+
+### **Funcionalidad:**
+- **Copia automática de assets** durante compilación
+- **Búsqueda inteligente** de archivos de niveles
+- **Sistema mejorado** de guardado/carga
+- **Replay system** con timing visual
+
+### **Desarrollo:**
+- **IntelliSense completo** configurado
+- **Debugging** completamente funcional
+- **Tasks automatizadas** para compilación
+- **Documentación técnica** completa
 
 ---
 
-## Contacto
+## 🎮 **Controles del Juego:**
 
-Para sugerencias o soporte, contacta a [JordanJazz24](https://github.com/JordanJazz24).
+| Tecla | Acción |
+|-------|--------|
+| **W/A/S/D** | Mover jugador |
+| **R** | Reiniciar nivel |
+| **G** | Guardar partida |
+| **Q** | Salir |
 
 ---
 
-**Este proyecto demuestra calidad en el manejo de memoria, estructuras de datos y lógica de juegos en C++, siendo una excelente base para experimentación y aprendizaje avanzado.**
+## 🔧 **Características Técnicas:**
+
+- **C++17** con características modernas
+- **CMake** para gestión de build
+- **Gestión automática de memoria** sin leaks
+- **Assets automáticos** copiados al build
+- **Multiplataforma** (Windows configurado, fácil extensión)
+- **Documentación Doxygen** integrada
+
+---
+
+## 📈 **Comparación: Antes vs Después**
+
+| Aspecto | Antes | Después |
+|---------|-------|---------|
+| **Archivos de código** | 5 archivos mezclados | 10+ archivos organizados |
+| **Responsabilidades** | Mezcladas | Claramente separadas |
+| **Mantenibilidad** | Difícil | Excelente |
+| **Extensibilidad** | Limitada | Altamente extensible |
+| **Testabilidad** | Compleja | Fácil testing modular |
+| **Documentación** | Básica | Profesional completa |
+| **Build system** | Manual | Completamente automatizado |
+
+---
+
+## ✅ **Estado de Verificación:**
+
+- **✅ Compilación exitosa** con nueva arquitectura
+- **✅ Ejecución funcional** de todos los niveles
+- **✅ Assets automáticos** copiándose correctamente
+- **✅ Guardado/carga** funcionando
+- **✅ Todas las funcionalidades** preservadas
+- **✅ Configuración VS Code** actualizada
+- **✅ Documentación** completamente actualizada
+
+---
+
+**🎯 El proyecto ahora sigue estándares profesionales de desarrollo y está preparado para expansión futura manteniendo excelente calidad de código.**
