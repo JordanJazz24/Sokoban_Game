@@ -62,7 +62,7 @@ private:
     void loadGame();
     
     /**
-     * @brief Guarda la partida actual
+     * @brief Guarda la partida actualmente
      */
     void saveGame();
     
@@ -70,6 +70,11 @@ private:
      * @brief Ejecuta el bucle principal de un nivel
      */
     void runLevel();
+    
+    /**
+     * @brief Muestra la pantalla de tiempo de carga del nivel
+     */
+    void showLoadTimeScreen();
     
     /**
      * @brief Procesa la entrada durante el juego
@@ -100,12 +105,26 @@ private:
     void showGameCompleteScreen();
     
     /**
-     * @brief Convierte entrada de teclado a movimiento
+     * @brief Convierte entrada de teclado a movimiento para el jugador 1 (WASD)
      * @param key Tecla presionada
      * @param movement Referencia donde almacenar el movimiento
      * @return true si es un movimiento válido, false en caso contrario
      */
-    bool keyToMovement(char key, Movement& movement);
+    bool keyToMovementPlayer1(char key, Movement& movement);
+    
+    /**
+     * @brief Convierte entrada de teclado a movimiento para el jugador 2 (flechas)
+     * @param key Código de tecla presionada
+     * @param movement Referencia donde almacenar el movimiento
+     * @return true si es un movimiento válido, false en caso contrario
+     */
+    bool keyToMovementPlayer2(int key, Movement& movement);
+    
+    /**
+     * @brief Procesa entradas de ambos jugadores simultáneamente
+     * @return true para continuar el nivel, false para salir
+     */
+    bool processMultiPlayerInput();
     
     /**
      * @brief Limpia la pantalla
@@ -117,6 +136,18 @@ private:
      * @return Tecla presionada
      */
     char waitForKeyPress();
+    
+    /**
+     * @brief Verifica si hay una tecla disponible sin bloquear
+     * @return true si hay una tecla disponible, false en caso contrario
+     */
+    bool isKeyAvailable();
+    
+    /**
+     * @brief Obtiene la tecla presionada sin bloquear
+     * @return Código de la tecla presionada o 0 si no hay ninguna
+     */
+    int getKeyPress();
 };
 
 #endif // GAME_H

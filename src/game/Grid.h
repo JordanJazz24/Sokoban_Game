@@ -30,12 +30,24 @@ public:
 class Grid {
 private:
     Node* head;                     ///< Puntero al primer nodo (esquina superior izquierda)
-    Node* playerNode;              ///< Puntero al nodo del jugador
-    bool playerInPoint;            ///< Si el jugador está en un punto objetivo
+    Node* player1Node;             ///< Puntero al nodo del jugador 1
+    Node* player2Node;             ///< Puntero al nodo del jugador 2
+    bool player1InPoint;           ///< Si el jugador 1 está en un punto objetivo
+    bool player2InPoint;           ///< Si el jugador 2 está en un punto objetivo
     int numBoxes;                  ///< Número de cajas en el nivel
     int numRows;                   ///< Número de filas en la matriz
     int numCols;                   ///< Número de columnas en la matriz
     std::stack<Node*>* goalStack;  ///< Pila para las cajas en la posición final
+    double player1CreationTime;    ///< Tiempo de creación del jugador 1 en ms
+    double player2CreationTime;    ///< Tiempo de creación del jugador 2 en ms
+    double player1LastMoveTime;    ///< Tiempo del último movimiento del jugador 1 en ms
+    double player2LastMoveTime;    ///< Tiempo del último movimiento del jugador 2 en ms
+    double player1TotalMoveTime;   ///< Tiempo total acumulado de movimientos del jugador 1 en ms
+    double player2TotalMoveTime;   ///< Tiempo total acumulado de movimientos del jugador 2 en ms
+    int player1MoveCount;          ///< Número de movimientos del jugador 1
+    int player2MoveCount;          ///< Número de movimientos del jugador 2
+    double lastRefreshTime;        ///< Tiempo del último refresh completo del display en ms
+    double lastValidationTime;     ///< Tiempo de la última validación de estado en ms
 
 public:
     /**
@@ -52,11 +64,12 @@ public:
     ~Grid();
     
     /**
-     * @brief Mueve al jugador en la dirección especificada
+     * @brief Mueve al jugador especificado en la dirección indicada
+     * @param player Jugador a mover (PLAYER_1 o PLAYER_2)
      * @param movement Dirección del movimiento
      * @return true si el movimiento fue exitoso, false en caso contrario
      */
-    bool movePlayer(Movement movement);
+    bool movePlayer(Player player, Movement movement);
     
     /**
      * @brief Imprime el estado actual del grid
@@ -82,6 +95,78 @@ public:
      * @return Número de cajas en posición final
      */
     int getBoxesInGoals() const;
+    
+    /**
+     * @brief Obtiene el tiempo de creación del jugador 1
+     * @return Tiempo de creación en milisegundos
+     */
+    double getPlayer1CreationTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo de creación del jugador 2
+     * @return Tiempo de creación en milisegundos
+     */
+    double getPlayer2CreationTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo del último movimiento del jugador 1
+     * @return Tiempo de movimiento en milisegundos
+     */
+    double getPlayer1LastMoveTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo del último movimiento del jugador 2
+     * @return Tiempo de movimiento en milisegundos
+     */
+    double getPlayer2LastMoveTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo total acumulado de movimientos del jugador 1
+     * @return Tiempo total en milisegundos
+     */
+    double getPlayer1TotalMoveTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo total acumulado de movimientos del jugador 2
+     * @return Tiempo total en milisegundos
+     */
+    double getPlayer2TotalMoveTime() const;
+    
+    /**
+     * @brief Obtiene el número de movimientos realizados por el jugador 1
+     * @return Número de movimientos
+     */
+    int getPlayer1MoveCount() const;
+    
+    /**
+     * @brief Obtiene el número de movimientos realizados por el jugador 2
+     * @return Número de movimientos
+     */
+    int getPlayer2MoveCount() const;
+    
+    /**
+     * @brief Obtiene el tiempo del último refresh completo del display
+     * @return Tiempo de refresh en milisegundos
+     */
+    double getLastRefreshTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo de la última validación de estado
+     * @return Tiempo de validación en milisegundos
+     */
+    double getLastValidationTime() const;
+    
+    /**
+     * @brief Establece el tiempo del último refresh del display
+     * @param time Tiempo en milisegundos
+     */
+    void setLastRefreshTime(double time);
+    
+    /**
+     * @brief Establece el tiempo de la última validación de estado
+     * @param time Tiempo en milisegundos
+     */
+    void setLastValidationTime(double time);
 
 private:
     /**
@@ -96,11 +181,26 @@ private:
     void clearGrid();
     
     /**
-     * @brief Verifica si un movimiento es válido
+     * @brief Verifica si un movimiento es válido para el jugador especificado
+     * @param player Jugador que intenta moverse
      * @param targetNode Nodo destino del movimiento
      * @return true si el movimiento es válido, false en caso contrario
      */
-    bool isValidMove(Node* targetNode) const;
+    bool isValidMove(Player player, Node* targetNode) const;
+    
+    /**
+     * @brief Obtiene el nodo del jugador especificado
+     * @param player Jugador del cual obtener el nodo
+     * @return Puntero al nodo del jugador
+     */
+    Node* getPlayerNode(Player player) const;
+    
+    /**
+     * @brief Verifica si un nodo contiene algún jugador
+     * @param node Nodo a verificar
+     * @return true si contiene un jugador, false en caso contrario
+     */
+    bool isPlayerInNode(Node* node) const;
     
     /**
      * @brief Verifica si una celda está libre
@@ -131,10 +231,11 @@ private:
     bool isBoxInGoal(Node* node) const;
     
     /**
-     * @brief Intercambia los símbolos entre dos nodos
+     * @brief Intercambia los símbolos entre el jugador y un nodo destino
+     * @param player Jugador que se mueve
      * @param targetNode Nodo con el que intercambiar
      */
-    void swapSymbols(Node*& targetNode);
+    void swapSymbols(Player player, Node*& targetNode);
     
     /**
      * @brief Maneja el movimiento de una caja

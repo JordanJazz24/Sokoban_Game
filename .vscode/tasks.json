@@ -1,81 +1,118 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "CMake: Configure",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "-G", "MinGW Makefiles",
-                "-B", "build",
-                "-S", "."
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": [],
-            "detail": "Configurar el proyecto con CMake usando MinGW"
-        },
-        {
-            "label": "CMake: Build",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build", "build",
-                "--config", "Debug"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "detail": "Compilar el proyecto usando CMake",
-            "dependsOn": "CMake: Configure"
-        },
-        {
-            "label": "CMake: Clean Build",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build", "build",
-                "--target", "clean"
-            ],
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": [],
-            "detail": "Limpiar archivos de compilación"
-        },
-        {
-            "label": "Run: Sokoban Game",
-            "type": "shell",
-            "command": "${workspaceFolder}/build/Sokoban_Game.exe",
-            "group": "test",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated"
-            },
-            "problemMatcher": [],
-            "detail": "Ejecutar el juego Sokoban",
-            "dependsOn": "CMake: Build"
-        }
-    ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "CMake: Configure",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"-G",
+				"MinGW Makefiles",
+				"-B",
+				"build",
+				"-S",
+				"."
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": [],
+			"detail": "Configurar el proyecto con CMake usando MinGW"
+		},
+		{
+			"label": "CMake: Build",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"build",
+				"--config",
+				"Debug"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"detail": "Compilar el proyecto usando CMake",
+			"dependsOn": "CMake: Configure"
+		},
+		{
+			"label": "CMake: Clean Build",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"build",
+				"--target",
+				"clean"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			},
+			"problemMatcher": [],
+			"detail": "Limpiar archivos de compilación"
+		},
+		{
+			"label": "Run: Sokoban Game",
+			"type": "shell",
+			"command": "${workspaceFolder}/build/Sokoban_Game.exe",
+			"group": "test",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated"
+			},
+			"problemMatcher": [],
+			"detail": "Ejecutar el juego Sokoban",
+			"dependsOn": "CMake: Build"
+		},
+		{
+			"label": "Build Project",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"build"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Compile Project",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"build"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Final Build",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"build"
+			],
+			"group": "build"
+		}
+	]
 }

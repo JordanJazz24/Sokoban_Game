@@ -18,17 +18,28 @@ enum Movement {
 };
 
 /**
+ * @enum Player
+ * @brief Identifica a los jugadores
+ */
+enum Player {
+    PLAYER_1,  ///< Jugador 1 (controles WASD)
+    PLAYER_2   ///< Jugador 2 (controles flechas)
+};
+
+/**
  * @enum CellType
  * @brief Representa los tipos de celdas en el juego
  */
 enum CellType {
     EMPTY = ' ',        ///< Celda vacía
     WALL = '#',         ///< Pared
-    PLAYER = '@',       ///< Jugador
+    PLAYER = '@',       ///< Jugador 1
+    PLAYER2 = '&',      ///< Jugador 2
     BOX = '$',          ///< Caja
     GOAL = '.',         ///< Objetivo
     BOX_ON_GOAL = '!',  ///< Caja en objetivo
-    PLAYER_ON_GOAL = '+' ///< Jugador en objetivo
+    PLAYER_ON_GOAL = '+', ///< Jugador 1 en objetivo
+    PLAYER2_ON_GOAL = '%' ///< Jugador 2 en objetivo
 };
 
 /**
@@ -52,10 +63,12 @@ struct Position {
  */
 struct GameState {
     int currentLevel;           ///< Nivel actual
-    Position playerPosition;    ///< Posición del jugador
-    bool playerOnGoal;         ///< Si el jugador está en un objetivo
+    Position player1Position;   ///< Posición del jugador 1
+    Position player2Position;   ///< Posición del jugador 2
+    bool player1OnGoal;        ///< Si el jugador 1 está en un objetivo
+    bool player2OnGoal;        ///< Si el jugador 2 está en un objetivo
     
-    GameState(int level = 1) : currentLevel(level), playerOnGoal(false) {}
+    GameState(int level = 1) : currentLevel(level), player1OnGoal(false), player2OnGoal(false) {}
 };
 
 #endif // TYPES_H

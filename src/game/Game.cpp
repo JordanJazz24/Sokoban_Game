@@ -2,6 +2,8 @@
 #include <iostream>
 #include <Windows.h>
 #include <conio.h>
+#include <iomanip>
+#include <chrono>
 
 Game::Game() : currentLevel(nullptr), currentLevelNumber(1) {
 }
@@ -59,6 +61,9 @@ void Game::startNewGame(int levelNumber) {
     delete currentLevel;
     currentLevel = new Level(currentLevelNumber);
     gameState.currentLevel = currentLevelNumber;
+    
+    // Mostrar pantalla de tiempo de carga solo para nueva partida
+    showLoadTimeScreen();
 }
 
 void Game::loadGame() {
@@ -95,13 +100,55 @@ void Game::saveGame() {
 
 void Game::runLevel() {
     while (currentLevel != nullptr) {
+        // Iniciar medición del tiempo de refresh del display completo
+        auto refreshStart = std::chrono::high_resolution_clock::now();
+        
         currentLevel->display();
         std::cout << std::endl;
-        std::cout << GameConstants::CONTROLS_MESSAGE << std::endl;
         
-        char input = waitForKeyPress();
+        // Mostrar información de rendimiento en tiempo real
+        std::cout << "TIEMPOS DE MOVIMIENTO:" << std::endl;
         
-        if (!processGameInput(input)) {
+        // Mostrar tiempo total y número de movimientos para jugador 1
+        int player1Moves = currentLevel->getPlayer1MoveCount();
+        double player1Total = currentLevel->getPlayer1TotalMoveTime();
+        std::cout << "- Jugador 1 (@): " << std::fixed << std::setprecision(3) 
+                  << player1Total << " ms total en " << player1Moves << " movimientos";
+        if (player1Moves > 0) {
+            std::cout << " (promedio: " << std::setprecision(2) << (player1Total / player1Moves) << " ms/mov)";
+        }
+        std::cout << std::endl;
+        
+        // Mostrar tiempo total y número de movimientos para jugador 2
+        int player2Moves = currentLevel->getPlayer2MoveCount();
+        double player2Total = currentLevel->getPlayer2TotalMoveTime();
+        std::cout << "- Jugador 2 (&): " << std::fixed << std::setprecision(3) 
+                  << player2Total << " ms total en " << player2Moves << " movimientos";
+        if (player2Moves > 0) {
+            std::cout << " (promedio: " << std::setprecision(2) << (player2Total / player2Moves) << " ms/mov)";
+        }
+        std::cout << std::endl;
+        
+        // Mostrar tiempos de sistema
+        std::cout << "TIEMPOS DE SISTEMA:" << std::endl;
+        std::cout << "- Refresh Display: " << std::fixed << std::setprecision(3) 
+                  << currentLevel->getLastRefreshTime() << " ms" << std::endl;
+        
+        // Finalizar medición del tiempo de refresh
+        auto refreshEnd = std::chrono::high_resolution_clock::now();
+        auto refreshDuration = std::chrono::duration_cast<std::chrono::microseconds>(refreshEnd - refreshStart);
+        double refreshTime = refreshDuration.count() / 1000.0;
+        currentLevel->setLastRefreshTime(refreshTime);
+        
+        std::cout << std::endl;
+        std::cout << "Controles - Jugador 1: WASD | Jugador 2: Flechas | Q: Salir | G: Guardar | R: Reiniciar" << std::endl;
+        
+        // Esperar hasta que haya al menos una entrada
+        while (!isKeyAvailable()) {
+            Sleep(10);
+        }
+        
+        if (!processMultiPlayerInput()) {
             break; // Salir del nivel
         }
         
@@ -134,9 +181,9 @@ bool Game::processGameInput(char input) {
             return true;
             
         default:
-            if (keyToMovement(input, movement)) {
-                if (!currentLevel->makeMove(movement)) {
-                    std::cout << "Movimiento inválido." << std::endl;
+            if (keyToMovementPlayer1(input, movement)) {
+                if (!currentLevel->makeMove(PLAYER_1, movement)) {
+                    std::cout << "Movimiento inválido para Jugador 1." << std::endl;
                     Sleep(500);
                 }
             } else {
@@ -145,6 +192,51 @@ bool Game::processGameInput(char input) {
             }
             return true;
     }
+}
+
+bool Game::processMultiPlayerInput() {
+    bool player1Moved = false;
+    bool player2Moved = false;
+    
+    // Procesar múltiples entradas en un frame
+    while (isKeyAvailable()) {
+        int key = getKeyPress();
+        
+        // Comandos especiales
+        if (key == 'Q' || key == 'q') {
+            return false; // Salir del nivel
+        }
+        if (key == 'G' || key == 'g') {
+            saveGame();
+            continue;
+        }
+        if (key == 'R' || key == 'r') {
+            currentLevel->reset();
+            std::cout << "Nivel reiniciado." << std::endl;
+            Sleep(1000);
+            return true;
+        }
+        
+        Movement movement;
+        
+        // Verificar movimientos del Jugador 1 (WASD)
+        if (keyToMovementPlayer1(key, movement) && !player1Moved) {
+            if (currentLevel->makeMove(PLAYER_1, movement)) {
+                player1Moved = true;
+            }
+        }
+        // Verificar movimientos del Jugador 2 (flechas)
+        else if (keyToMovementPlayer2(key, movement) && !player2Moved) {
+            if (currentLevel->makeMove(PLAYER_2, movement)) {
+                player2Moved = true;
+            }
+        }
+        
+        // Limpiar buffer adicional para permitir entrada fluida
+        Sleep(10);
+    }
+    
+    return true;
 }
 
 void Game::handleLevelCompletion() {
@@ -216,7 +308,30 @@ void Game::showGameCompleteScreen() {
     std::cout << "Presione ENTER para reiniciar el juego o R para ver la repetición del último nivel: ";
 }
 
-bool Game::keyToMovement(char key, Movement& movement) {
+void Game::showLoadTimeScreen() {
+    if (currentLevel) {
+        clearScreen();
+        std::cout << "====================================" << std::endl;
+        std::cout << "      INFORMACIÓN DE CARGA" << std::endl;
+        std::cout << "====================================" << std::endl;
+        std::cout << std::endl;
+        std::cout << "Nivel: " << currentLevelNumber << std::endl;
+        std::cout << "Tiempo de carga del archivo: " << std::fixed << std::setprecision(3) 
+                  << currentLevel->getLoadTime() << " ms" << std::endl;
+        std::cout << std::endl;
+        std::cout << "CONTROLES:" << std::endl;
+        std::cout << "- Jugador 1: W/A/S/D" << std::endl;
+        std::cout << "- Jugador 2: Flechas" << std::endl;
+        std::cout << std::endl;
+        std::cout << "====================================" << std::endl;
+        std::cout << std::endl;
+        std::cout << "Presione cualquier tecla para continuar al nivel..." << std::endl;
+        
+        waitForKeyPress();
+    }
+}
+
+bool Game::keyToMovementPlayer1(char key, Movement& movement) {
     switch (key) {
         case 'W':
         case 'w':
@@ -239,10 +354,47 @@ bool Game::keyToMovement(char key, Movement& movement) {
     }
 }
 
+bool Game::keyToMovementPlayer2(int key, Movement& movement) {
+    switch (key) {
+        case 72: // Flecha arriba
+            movement = UP;
+            return true;
+        case 80: // Flecha abajo
+            movement = DOWN;
+            return true;
+        case 75: // Flecha izquierda
+            movement = LEFT;
+            return true;
+        case 77: // Flecha derecha
+            movement = RIGHT;
+            return true;
+        default:
+            return false;
+    }
+}
+
 void Game::clearScreen() {
     system("cls");
 }
 
 char Game::waitForKeyPress() {
     return _getch();
+}
+
+bool Game::isKeyAvailable() {
+    return _kbhit();
+}
+
+int Game::getKeyPress() {
+    if (_kbhit()) {
+        int key = _getch();
+        // Si es una tecla especial (como las flechas), necesitamos el segundo código
+        if (key == 0 || key == 224) {
+            if (_kbhit()) {
+                return _getch();
+            }
+        }
+        return key;
+    }
+    return 0;
 }
