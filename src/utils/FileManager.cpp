@@ -5,128 +5,81 @@
 #include <vector>
 #include <omp.h>
 
+
 char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
     std::string filename = getLevelFileName(levelNumber);
     std::string fullPath = findFile(filename);
-    
+
     if (fullPath.empty()) {
         std::cerr << "Error: No se pudo encontrar el archivo " << filename << std::endl;
         return nullptr;
     }
-    
+
     std::ifstream inputFile(fullPath);
     if (!inputFile) {
         std::cerr << "Error: No se pudo abrir el archivo " << fullPath << std::endl;
         return nullptr;
     }
+
+    // --- PASO 1: Leer el archivo UNA SOLA VEZ en un vector de strings ---
+    std::vector<std::string> lines;
+    std::string line;
+    lines.reserve(100); // Reserva inicial para evitar realojamientos
+    while (std::getline(inputFile, line)) {
+        lines.push_back(line);
+    }
+    inputFile.close();
+
+    // --- PASO 2: Calcular dimensiones desde la memoria (muy rápido) ---
+    if (lines.empty()) {
+        rows = 0;
+        cols = 0;
+        return nullptr;
+    }
+    rows = lines.size();
     
-    // Contar filas y encontrar la columna máxima (optimizado)
-    rows = 0;
-    int maxCols = 0;
-    int currentCols = 0;
-    char ch;
-    
-    while (inputFile.get(ch)) {
-        if (ch != '\n') {
-            currentCols++;
-        } else {
-            rows++;
-            if (currentCols > maxCols) {
-                maxCols = currentCols;
-            }
-            currentCols = 0;
+    size_t maxLen = 0;
+    // Este bucle es lo suficientemente rápido como para no necesitar paralelización
+    for (const auto& l : lines) {
+        if (l.length() > maxLen) {
+            maxLen = l.length();
         }
     }
-    cols = maxCols;
+    cols = static_cast<int>(maxLen);
     
     std::cout << "Tamaño de la matriz: " << rows << "x" << cols << std::endl;
     std::cout << "Hilos disponibles para OpenMP: " << omp_get_max_threads() << std::endl;
-    
-    // Volver al principio del archivo
-    inputFile.clear();
-    inputFile.seekg(0, std::ios::beg);
-    
-    // Crear matriz (solo paralelizar si hay suficiente trabajo)
+
+    // --- PASO 3: Asignar y llenar la matriz en un único bucle paralelo consolidado ---
     char** matrix = new char*[rows];
-    
-    if (rows > 10) { // Solo paralelizar si hay suficientes filas
-        #pragma omp parallel for schedule(static) if(rows > 10)
-        for (int i = 0; i < rows; i++) {
-            matrix[i] = new char[cols];
-            // Inicializar fila con espacios
-            for (int j = 0; j < cols; j++) {
-                matrix[i][j] = ' ';
-            }
+
+    #pragma omp parallel for schedule(static)
+    for (int i = 0; i < rows; ++i) {
+        // Cada hilo asigna y llena su propia fila
+        matrix[i] = new char[cols];
+        const std::string& currentLine = lines[i];
+        const int lineSize = currentLine.size();
+
+        // Copiar contenido de la línea
+        for (int j = 0; j < lineSize; ++j) {
+            matrix[i][j] = currentLine[j];
         }
-    } else {
-        // Versión secuencial para matrices pequeñas
-        for (int i = 0; i < rows; i++) {
-            matrix[i] = new char[cols];
-            for (int j = 0; j < cols; j++) {
-                matrix[i][j] = ' ';
-            }
-        }
-    }
-    
-    // Llenar matriz con paralelización optimizada y trabajo intensivo
-    std::vector<std::string> fileLines;
-    fileLines.reserve(rows);
-    
-    std::string line;
-    while (std::getline(inputFile, line) && fileLines.size() < static_cast<size_t>(rows)) {
-        fileLines.push_back(line);
-    }
-    
-    // Llenar matriz - solo paralelizar si hay suficientes líneas para justificar el overhead
-    if (fileLines.size() > 5) {
-        #pragma omp parallel for schedule(static) if(fileLines.size() > 5)
-        for (int i = 0; i < static_cast<int>(fileLines.size()); i++) {
-            const std::string& currentLine = fileLines[i];
-            int lineSize = static_cast<int>(currentLine.size());
-            
-            // Copiar caracteres de la línea
-            for (int j = 0; j < std::min(lineSize, cols); j++) {
-                matrix[i][j] = currentLine[j];
-            }
-            
-            // Llenar resto con espacios si es necesario
-            for (int j = lineSize; j < cols; j++) {
-                matrix[i][j] = ' ';
-            }
-        }
-    } else {
-        // Versión secuencial para archivos pequeños
-        for (int i = 0; i < static_cast<int>(fileLines.size()); i++) {
-            const std::string& currentLine = fileLines[i];
-            int lineSize = static_cast<int>(currentLine.size());
-            
-            for (int j = 0; j < std::min(lineSize, cols); j++) {
-                matrix[i][j] = currentLine[j];
-            }
-            
-            for (int j = lineSize; j < cols; j++) {
-                matrix[i][j] = ' ';
-            }
+
+        // Rellenar el resto con espacios
+        for (int j = lineSize; j < cols; ++j) {
+            matrix[i][j] = ' ';
         }
     }
-    
-    inputFile.close();
+
     return matrix;
 }
 
 void FileManager::freeMatrix(char** matrix, int rows) {
     if (matrix != nullptr) {
-        // Solo paralelizar la liberación si hay muchas filas
-        if (rows > 20) {
-            #pragma omp parallel for schedule(static) if(rows > 20)
-            for (int i = 0; i < rows; i++) {
-                delete[] matrix[i];
-            }
-        } else {
-            // Versión secuencial para matrices pequeñas
-            for (int i = 0; i < rows; i++) {
-                delete[] matrix[i];
-            }
+        // La versión secuencial es más eficiente para liberar memoria.
+        // El overhead de paralelizar 'delete' es mayor que cualquier ganancia.
+        for (int i = 0; i < rows; i++) {
+            delete[] matrix[i];
         }
         delete[] matrix;
     }
