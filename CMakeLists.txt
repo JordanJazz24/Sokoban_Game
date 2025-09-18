@@ -6,6 +6,15 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Buscar y configurar OpenMP para paralelización
+find_package(OpenMP REQUIRED)
+if(OpenMP_CXX_FOUND)
+    message(STATUS "OpenMP encontrado: ${OpenMP_CXX_VERSION}")
+    message(STATUS "Flags de OpenMP: ${OpenMP_CXX_FLAGS}")
+else()
+    message(FATAL_ERROR "OpenMP no encontrado - Requerido para paralelización")
+endif()
+
 # Configurar directorios
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
@@ -37,6 +46,9 @@ set(ALL_SOURCES
 
 # Crear ejecutable
 add_executable(${PROJECT_NAME} ${ALL_SOURCES})
+
+# Vincular OpenMP para paralelización
+target_link_libraries(${PROJECT_NAME} OpenMP::OpenMP_CXX)
 
 # Configurar propiedades del ejecutable
 set_target_properties(${PROJECT_NAME} PROPERTIES

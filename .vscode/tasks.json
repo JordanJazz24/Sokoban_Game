@@ -1,118 +1,103 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "CMake: Configure",
-			"type": "shell",
-			"command": "cmake",
-			"args": [
-				"-G",
-				"MinGW Makefiles",
-				"-B",
-				"build",
-				"-S",
-				"."
-			],
-			"group": "build",
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": false,
-				"panel": "shared"
-			},
-			"problemMatcher": [],
-			"detail": "Configurar el proyecto con CMake usando MinGW"
-		},
-		{
-			"label": "CMake: Build",
-			"type": "shell",
-			"command": "cmake",
-			"args": [
-				"--build",
-				"build",
-				"--config",
-				"Debug"
-			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": false,
-				"panel": "shared"
-			},
-			"problemMatcher": [
-				"$gcc"
-			],
-			"detail": "Compilar el proyecto usando CMake",
-			"dependsOn": "CMake: Configure"
-		},
-		{
-			"label": "CMake: Clean Build",
-			"type": "shell",
-			"command": "cmake",
-			"args": [
-				"--build",
-				"build",
-				"--target",
-				"clean"
-			],
-			"group": "build",
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": false,
-				"panel": "shared"
-			},
-			"problemMatcher": [],
-			"detail": "Limpiar archivos de compilación"
-		},
-		{
-			"label": "Run: Sokoban Game",
-			"type": "shell",
-			"command": "${workspaceFolder}/build/Sokoban_Game.exe",
-			"group": "test",
-			"presentation": {
-				"echo": true,
-				"reveal": "always",
-				"focus": true,
-				"panel": "dedicated"
-			},
-			"problemMatcher": [],
-			"detail": "Ejecutar el juego Sokoban",
-			"dependsOn": "CMake: Build"
-		},
-		{
-			"label": "Build Project",
-			"type": "shell",
-			"command": "cmake",
-			"args": [
-				"--build",
-				"build"
-			],
-			"group": "build"
-		},
-		{
-			"label": "Compile Project",
-			"type": "shell",
-			"command": "cmake",
-			"args": [
-				"--build",
-				"build"
-			],
-			"group": "build"
-		},
-		{
-			"label": "Final Build",
-			"type": "shell",
-			"command": "cmake",
-			"args": [
-				"--build",
-				"build"
-			],
-			"group": "build"
-		}
-	]
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "CMake: Configure",
+            "command": "cmake",
+            "args": [
+                "-B", "build",
+                "-G", "MinGW Makefiles",
+                "-DCMAKE_CXX_COMPILER=C:\\msys64\\ucrt64\\bin\\g++.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "detail": "Configurar proyecto con CMake y MinGW"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: Build Debug",
+            "command": "cmake",
+            "args": [
+                "--build", "build",
+                "--config", "Debug"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": "CMake: Configure",
+            "problemMatcher": "$gcc",
+            "detail": "Compilar proyecto en modo Debug"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: Build Release",
+            "command": "cmake",
+            "args": [
+                "--build", "build",
+                "--config", "Release"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "dependsOn": "CMake: Configure",
+            "problemMatcher": "$gcc",
+            "detail": "Compilar proyecto en modo Release"
+        },
+        {
+            "type": "shell",
+            "label": "CMake: Clean",
+            "command": "cmake",
+            "args": [
+                "--build", "build",
+                "--target", "clean"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "detail": "Limpiar archivos generados"
+        },
+        {
+            "type": "shell",
+            "label": "Run Sokoban Game",
+            "command": "${workspaceFolder}\\build\\Sokoban_Game.exe",
+            "options": {
+                "cwd": "${workspaceFolder}\\build"
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "dependsOn": "CMake: Build Debug",
+            "detail": "Ejecutar el juego Sokoban"
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe build active file",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "Task generated by Debugger."
+        }
+    ],
+    "version": "2.0.0"
 }

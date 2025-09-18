@@ -76,75 +76,75 @@ CMakeFiles/Sokoban_Game.dir/src/main.cpp.obj: CMakeFiles/Sokoban_Game.dir/includ
 CMakeFiles/Sokoban_Game.dir/src/main.cpp.obj: D:/Program\ Files/GitHub\ Repos/Sokoban_Game/src/main.cpp
 CMakeFiles/Sokoban_Game.dir/src/main.cpp.obj: CMakeFiles/Sokoban_Game.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Sokoban_Game.dir/src/main.cpp.obj"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/main.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\main.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\main.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\main.cpp"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/main.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\main.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\main.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\main.cpp"
 
 CMakeFiles/Sokoban_Game.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sokoban_Game.dir/src/main.cpp.i"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\main.cpp" > CMakeFiles\Sokoban_Game.dir\src\main.cpp.i
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\main.cpp" > CMakeFiles\Sokoban_Game.dir\src\main.cpp.i
 
 CMakeFiles/Sokoban_Game.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sokoban_Game.dir/src/main.cpp.s"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\main.cpp" -o CMakeFiles\Sokoban_Game.dir\src\main.cpp.s
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\main.cpp" -o CMakeFiles\Sokoban_Game.dir\src\main.cpp.s
 
 CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.obj: CMakeFiles/Sokoban_Game.dir/flags.make
 CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.obj: CMakeFiles/Sokoban_Game.dir/includes_CXX.rsp
 CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.obj: D:/Program\ Files/GitHub\ Repos/Sokoban_Game/src/game/Game.cpp
 CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.obj: CMakeFiles/Sokoban_Game.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.obj"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\game\Game.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\game\Game.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Game.cpp"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\game\Game.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\game\Game.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Game.cpp"
 
 CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.i"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Game.cpp" > CMakeFiles\Sokoban_Game.dir\src\game\Game.cpp.i
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Game.cpp" > CMakeFiles\Sokoban_Game.dir\src\game\Game.cpp.i
 
 CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sokoban_Game.dir/src/game/Game.cpp.s"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Game.cpp" -o CMakeFiles\Sokoban_Game.dir\src\game\Game.cpp.s
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Game.cpp" -o CMakeFiles\Sokoban_Game.dir\src\game\Game.cpp.s
 
 CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj: CMakeFiles/Sokoban_Game.dir/flags.make
 CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj: CMakeFiles/Sokoban_Game.dir/includes_CXX.rsp
 CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj: D:/Program\ Files/GitHub\ Repos/Sokoban_Game/src/game/Level.cpp
 CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj: CMakeFiles/Sokoban_Game.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\game\Level.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\game\Level.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Level.cpp"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\game\Level.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\game\Level.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Level.cpp"
 
 CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.i"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Level.cpp" > CMakeFiles\Sokoban_Game.dir\src\game\Level.cpp.i
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Level.cpp" > CMakeFiles\Sokoban_Game.dir\src\game\Level.cpp.i
 
 CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.s"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Level.cpp" -o CMakeFiles\Sokoban_Game.dir\src\game\Level.cpp.s
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Level.cpp" -o CMakeFiles\Sokoban_Game.dir\src\game\Level.cpp.s
 
 CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj: CMakeFiles/Sokoban_Game.dir/flags.make
 CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj: CMakeFiles/Sokoban_Game.dir/includes_CXX.rsp
 CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj: D:/Program\ Files/GitHub\ Repos/Sokoban_Game/src/game/Grid.cpp
 CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj: CMakeFiles/Sokoban_Game.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\game\Grid.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\game\Grid.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Grid.cpp"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\game\Grid.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\game\Grid.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Grid.cpp"
 
 CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.i"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Grid.cpp" > CMakeFiles\Sokoban_Game.dir\src\game\Grid.cpp.i
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Grid.cpp" > CMakeFiles\Sokoban_Game.dir\src\game\Grid.cpp.i
 
 CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.s"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Grid.cpp" -o CMakeFiles\Sokoban_Game.dir\src\game\Grid.cpp.s
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\game\Grid.cpp" -o CMakeFiles\Sokoban_Game.dir\src\game\Grid.cpp.s
 
 CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj: CMakeFiles/Sokoban_Game.dir/flags.make
 CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj: CMakeFiles/Sokoban_Game.dir/includes_CXX.rsp
 CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj: D:/Program\ Files/GitHub\ Repos/Sokoban_Game/src/utils/FileManager.cpp
 CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj: CMakeFiles/Sokoban_Game.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="D:\Program Files\GitHub Repos\Sokoban_Game\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\utils\FileManager.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\utils\FileManager.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\utils\FileManager.cpp"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj -MF CMakeFiles\Sokoban_Game.dir\src\utils\FileManager.cpp.obj.d -o CMakeFiles\Sokoban_Game.dir\src\utils\FileManager.cpp.obj -c "D:\Program Files\GitHub Repos\Sokoban_Game\src\utils\FileManager.cpp"
 
 CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.i"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\utils\FileManager.cpp" > CMakeFiles\Sokoban_Game.dir\src\utils\FileManager.cpp.i
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "D:\Program Files\GitHub Repos\Sokoban_Game\src\utils\FileManager.cpp" > CMakeFiles\Sokoban_Game.dir\src\utils\FileManager.cpp.i
 
 CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.s"
-	C:\MinGW\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\utils\FileManager.cpp" -o CMakeFiles\Sokoban_Game.dir\src\utils\FileManager.cpp.s
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "D:\Program Files\GitHub Repos\Sokoban_Game\src\utils\FileManager.cpp" -o CMakeFiles\Sokoban_Game.dir\src\utils\FileManager.cpp.s
 
 # Object files for target Sokoban_Game
 Sokoban_Game_OBJECTS = \
@@ -163,6 +163,8 @@ Sokoban_Game.exe: CMakeFiles/Sokoban_Game.dir/src/game/Level.cpp.obj
 Sokoban_Game.exe: CMakeFiles/Sokoban_Game.dir/src/game/Grid.cpp.obj
 Sokoban_Game.exe: CMakeFiles/Sokoban_Game.dir/src/utils/FileManager.cpp.obj
 Sokoban_Game.exe: CMakeFiles/Sokoban_Game.dir/build.make
+Sokoban_Game.exe: C:/msys64/ucrt64/lib/libgomp.dll.a
+Sokoban_Game.exe: C:/msys64/ucrt64/lib/libmingwthrd.a
 Sokoban_Game.exe: CMakeFiles/Sokoban_Game.dir/linkLibs.rsp
 Sokoban_Game.exe: CMakeFiles/Sokoban_Game.dir/objects1.rsp
 Sokoban_Game.exe: CMakeFiles/Sokoban_Game.dir/link.txt

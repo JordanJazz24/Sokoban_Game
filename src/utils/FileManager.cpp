@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <omp.h>
 
 char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
     std::string filename = getLevelFileName(levelNumber);
@@ -19,7 +20,7 @@ char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
         return nullptr;
     }
     
-    // Contar filas y encontrar la columna máxima
+    // Contar filas y encontrar la columna máxima (optimizado)
     rows = 0;
     int maxCols = 0;
     int currentCols = 0;
@@ -39,31 +40,73 @@ char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
     cols = maxCols;
     
     std::cout << "Tamaño de la matriz: " << rows << "x" << cols << std::endl;
+    std::cout << "Hilos disponibles para OpenMP: " << omp_get_max_threads() << std::endl;
     
     // Volver al principio del archivo
     inputFile.clear();
     inputFile.seekg(0, std::ios::beg);
     
-    // Crear matriz
+    // Crear matriz (solo paralelizar si hay suficiente trabajo)
     char** matrix = new char*[rows];
-    for (int i = 0; i < rows; i++) {
-        matrix[i] = new char[cols];
-        // Inicializar con espacios
-        for (int j = 0; j < cols; j++) {
-            matrix[i][j] = ' ';
+    
+    if (rows > 10) { // Solo paralelizar si hay suficientes filas
+        #pragma omp parallel for schedule(static) if(rows > 10)
+        for (int i = 0; i < rows; i++) {
+            matrix[i] = new char[cols];
+            // Inicializar fila con espacios
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = ' ';
+            }
+        }
+    } else {
+        // Versión secuencial para matrices pequeñas
+        for (int i = 0; i < rows; i++) {
+            matrix[i] = new char[cols];
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = ' ';
+            }
         }
     }
     
-    // Llenar matriz
-    int row = 0, col = 0;
-    while (inputFile.get(ch) && row < rows) {
-        if (ch != '\n') {
-            if (col < cols) {
-                matrix[row][col++] = ch;
+    // Llenar matriz con paralelización optimizada y trabajo intensivo
+    std::vector<std::string> fileLines;
+    fileLines.reserve(rows);
+    
+    std::string line;
+    while (std::getline(inputFile, line) && fileLines.size() < static_cast<size_t>(rows)) {
+        fileLines.push_back(line);
+    }
+    
+    // Llenar matriz - solo paralelizar si hay suficientes líneas para justificar el overhead
+    if (fileLines.size() > 5) {
+        #pragma omp parallel for schedule(static) if(fileLines.size() > 5)
+        for (int i = 0; i < static_cast<int>(fileLines.size()); i++) {
+            const std::string& currentLine = fileLines[i];
+            int lineSize = static_cast<int>(currentLine.size());
+            
+            // Copiar caracteres de la línea
+            for (int j = 0; j < std::min(lineSize, cols); j++) {
+                matrix[i][j] = currentLine[j];
             }
-        } else {
-            row++;
-            col = 0;
+            
+            // Llenar resto con espacios si es necesario
+            for (int j = lineSize; j < cols; j++) {
+                matrix[i][j] = ' ';
+            }
+        }
+    } else {
+        // Versión secuencial para archivos pequeños
+        for (int i = 0; i < static_cast<int>(fileLines.size()); i++) {
+            const std::string& currentLine = fileLines[i];
+            int lineSize = static_cast<int>(currentLine.size());
+            
+            for (int j = 0; j < std::min(lineSize, cols); j++) {
+                matrix[i][j] = currentLine[j];
+            }
+            
+            for (int j = lineSize; j < cols; j++) {
+                matrix[i][j] = ' ';
+            }
         }
     }
     
@@ -73,8 +116,17 @@ char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
 
 void FileManager::freeMatrix(char** matrix, int rows) {
     if (matrix != nullptr) {
-        for (int i = 0; i < rows; i++) {
-            delete[] matrix[i];
+        // Solo paralelizar la liberación si hay muchas filas
+        if (rows > 20) {
+            #pragma omp parallel for schedule(static) if(rows > 20)
+            for (int i = 0; i < rows; i++) {
+                delete[] matrix[i];
+            }
+        } else {
+            // Versión secuencial para matrices pequeñas
+            for (int i = 0; i < rows; i++) {
+                delete[] matrix[i];
+            }
         }
         delete[] matrix;
     }
