@@ -2,7 +2,18 @@
 
 **Autor:** [JordanJazz24](https://github.com/JordanJazz24)  
 **Versión:** 2.0.0 (Refactorizado)  
-**Estado:** ✅ Completamente funcional  
+**Estado:** ✅ Completamente funcional con VS Code + MSYS2  
+
+---
+
+## 🚀 **INICIO RÁPIDO - VS Code + MSYS2:**
+
+### **⚡ Para comenzar inmediatamente:**
+1. **Instalar MSYS2** → [https://www.msys2.org/](https://www.msys2.org/)
+2. **Abrir terminal MSYS2** → `pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake`
+3. **Abrir proyecto en VS Code** → **F5** → ¡Listo!
+
+✨ **Todo está pre-configurado. Solo presiona F5 y el juego se compilará y ejecutará automáticamente.**
 
 ---
 
@@ -58,28 +69,113 @@ Sokoban_Game/
 
 ---
 
-## 🚀 **Compilación y Ejecución:**
+## 🚀 **Compilación y Ejecución con VS Code + MSYS2:**
 
-### **Método Rápido (VS Code):**
-1. Abrir el proyecto en VS Code
-2. **F5** o **Ctrl+Shift+P** → "Tasks: Run Build Task"
-3. ¡Listo! El juego se compila y ejecuta automáticamente
+### **⚡ Configuración Instantánea:**
 
-### **Método Terminal:**
-```bash
-# Configurar y compilar
-mkdir build && cd build
-cmake -G "MinGW Makefiles" ..
-cmake --build .
+#### **1. Prerrequisitos - MSYS2:**
+1. **Instalar MSYS2** desde [https://www.msys2.org/](https://www.msys2.org/)
+2. **Abrir terminal MSYS2** y ejecutar:
+   ```bash
+   # Actualizar sistema
+   pacman -Syu
+   
+   # Instalar herramientas de desarrollo
+   pacman -S mingw-w64-x86_64-toolchain
+   pacman -S mingw-w64-x86_64-cmake
+   pacman -S mingw-w64-x86_64-ninja
+   pacman -S mingw-w64-x86_64-gdb
+   ```
 
-# Ejecutar (assets se copian automáticamente)
-./Sokoban_Game.exe
+#### **2. Ejecución en VS Code (Método Principal):**
+```
+🎯 SÚPER FÁCIL - TODO CONFIGURADO AUTOMÁTICAMENTE:
+```
+1. **Abrir proyecto** en VS Code
+2. **Instalar extensiones** (VS Code te preguntará automáticamente)
+3. **Presionar F5** → ¡Compila y ejecuta automáticamente!
+
+**Comandos disponibles:**
+- **F5**: Compilar + Ejecutar con Debug
+- **Ctrl+F5**: Compilar + Ejecutar sin Debug  
+- **Ctrl+Shift+P** → "Tasks: Run Build Task": Solo compilar
+- **Ctrl+Shift+P** → "MSYS2: Run Game": Solo ejecutar
+
+#### **3. Método PowerShell (Alternativo):**
+```powershell
+# Script automático completo
+.\setup_msys2.bat
+
+# O manualmente paso a paso:
+C:\msys64\mingw64\bin\cmake.exe -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Debug
+C:\msys64\mingw64\bin\cmake.exe --build build --config Debug -j 4
+.\build\Sokoban_Game_debug.exe
 ```
 
-### **Scripts Automatizados:**
+#### **4. Terminal MSYS2 (Para desarrolladores):**
 ```bash
-# Desde el directorio raíz:
-scripts/setup_and_run.bat  # Compilar y ejecutar todo automáticamente
+# Desde MSYS2 MINGW64 terminal:
+cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j 4
+./build/Sokoban_Game.exe
+```
+
+---
+
+## ⚙️ **Configuración VS Code - MSYS2:**
+
+### **📁 Archivos Incluidos (Configuración Automática):**
+
+El proyecto incluye configuración **completamente automática** para VS Code:
+
+| Archivo | Propósito |
+|---------|-----------|
+| `.vscode/settings.json` | Configuración CMake + MSYS2 |
+| `.vscode/tasks.json` | Tareas de compilación automatizadas |
+| `.vscode/launch.json` | Configuración de debug |
+| `.vscode/c_cpp_properties.json` | IntelliSense + Paths de MSYS2 |
+| `.vscode/extensions.json` | Extensiones recomendadas |
+
+### **🎯 Tareas Disponibles (Ctrl+Shift+P → Tasks):**
+
+| Tarea | Función | Shortcut |
+|-------|---------|----------|
+| **MSYS2: Configure CMake** | Configurar proyecto | - |
+| **MSYS2: Build Project** | Compilar (tarea por defecto) | **Ctrl+Shift+P** → Build |
+| **MSYS2: Build and Setup** | Compilar + copiar assets | - |
+| **MSYS2: Run Game** | Ejecutar juego | - |
+| **MSYS2: Clean Build** | Limpiar build directory | - |
+| **MSYS2: Check Tools** | Verificar herramientas | - |
+
+### **🐛 Debug & Run:**
+
+| Configuración | Propósito | Shortcut |
+|---------------|-----------|----------|
+| **Debug Sokoban (MSYS2)** | Ejecutar con debugger | **F5** |
+| **Run Sokoban (MSYS2)** | Ejecutar sin debugger | **Ctrl+F5** |
+
+### **🔧 Solución de Problemas:**
+
+#### Error: "Herramientas no encontradas"
+```powershell
+# Verificar instalación MSYS2:
+C:\msys64\mingw64\bin\gcc.exe --version
+C:\msys64\mingw64\bin\cmake.exe --version
+
+# Si faltan, instalar en MSYS2:
+pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake
+```
+
+#### Error: "Assets no encontrados"  
+```powershell
+# Los assets se copian automáticamente, pero si hay problemas:
+Copy-Item -Recurse -Force "assets" "build/assets"
+```
+
+#### Rebuild completo:
+```powershell
+# Limpiar y recompilar:
+Remove-Item -Recurse -Force "build"; .\setup_msys2.bat
 ```
 
 ---
@@ -119,12 +215,27 @@ scripts/setup_and_run.bat  # Compilar y ejecutar todo automáticamente
 
 ## 🔧 **Características Técnicas:**
 
+### **Desarrollo:**
 - **C++17** con características modernas
-- **CMake** para gestión de build
-- **Gestión automática de memoria** sin leaks
-- **Assets automáticos** copiados al build
-- **Multiplataforma** (Windows configurado, fácil extensión)
-- **Documentación Doxygen** integrada
+- **CMake** para gestión de build multiplataforma
+- **MSYS2 MinGW-w64** como toolchain principal
+- **VS Code** completamente configurado con:
+  - IntelliSense automático
+  - Debug integrado (GDB)
+  - Tareas de build automatizadas
+  - Configuración MSYS2 pre-establecida
+
+### **Sistema:**
+- **Gestión automática de memoria** sin memory leaks
+- **Assets automáticos** copiados durante compilación
+- **Multiplataforma** (Windows/MSYS2 configurado)
+- **Build system robusto** con detección de errores
+
+### **Calidad de Código:**
+- **Documentación Doxygen** completa
+- **Principios SOLID** aplicados
+- **Separación clara de responsabilidades**
+- **Testing preparado** para expansión futura
 
 ---
 
