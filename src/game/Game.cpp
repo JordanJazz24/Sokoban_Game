@@ -106,32 +106,24 @@ void Game::runLevel() {
         currentLevel->display();
         std::cout << std::endl;
         
-        // Mostrar información de rendimiento en tiempo real
-        std::cout << "TIEMPOS DE MOVIMIENTO:" << std::endl;
+        // Mostrar información de rendimiento útil
+        std::cout << "ESTADÍSTICAS DEL JUEGO:" << std::endl;
         
-        // Mostrar tiempo total y número de movimientos para jugador 1
+        // Mostrar número de movimientos para cada jugador
         int player1Moves = currentLevel->getPlayer1MoveCount();
-        double player1Total = currentLevel->getPlayer1TotalMoveTime();
-        std::cout << "- Jugador 1 (@): " << std::fixed << std::setprecision(3) 
-                  << player1Total << " ms total en " << player1Moves << " movimientos";
-        if (player1Moves > 0) {
-            std::cout << " (promedio: " << std::setprecision(2) << (player1Total / player1Moves) << " ms/mov)";
-        }
-        std::cout << std::endl;
-        
-        // Mostrar tiempo total y número de movimientos para jugador 2
         int player2Moves = currentLevel->getPlayer2MoveCount();
-        double player2Total = currentLevel->getPlayer2TotalMoveTime();
-        std::cout << "- Jugador 2 (&): " << std::fixed << std::setprecision(3) 
-                  << player2Total << " ms total en " << player2Moves << " movimientos";
-        if (player2Moves > 0) {
-            std::cout << " (promedio: " << std::setprecision(2) << (player2Total / player2Moves) << " ms/mov)";
-        }
-        std::cout << std::endl;
+        std::cout << "- Jugador 1 (@): " << player1Moves << " movimientos" << std::endl;
+        std::cout << "- Jugador 2 (&): " << player2Moves << " movimientos" << std::endl;
         
-        // Mostrar tiempos de sistema
-        std::cout << "TIEMPOS DE SISTEMA:" << std::endl;
-        std::cout << "- Refresh Display: " << std::fixed << std::setprecision(3) 
+        // Mostrar tiempos de sistema relevantes
+        std::cout << "RENDIMIENTO DEL SISTEMA:" << std::endl;
+        std::cout << "- Tiempo de carga del nivel: " << std::fixed << std::setprecision(3) 
+                  << currentLevel->getLoadTime() << " ms" << std::endl;
+        std::cout << "- Tiempo de construcción del grid: " << std::fixed << std::setprecision(3) 
+                  << currentLevel->getGridCreationTime() << " ms" << std::endl;
+        std::cout << "- Tiempo de renderizado display: " << std::fixed << std::setprecision(3) 
+                  << currentLevel->getDisplayRenderTime() << " ms" << std::endl;
+        std::cout << "- Tiempo de refresh completo: " << std::fixed << std::setprecision(3) 
                   << currentLevel->getLastRefreshTime() << " ms" << std::endl;
         
         // Finalizar medición del tiempo de refresh

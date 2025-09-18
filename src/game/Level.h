@@ -93,42 +93,6 @@ public:
     double getLoadTime() const;
     
     /**
-     * @brief Obtiene el tiempo de creación del jugador 1
-     * @return Tiempo de creación en milisegundos
-     */
-    double getPlayer1CreationTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo de creación del jugador 2
-     * @return Tiempo de creación en milisegundos
-     */
-    double getPlayer2CreationTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo del último movimiento del jugador 1
-     * @return Tiempo de movimiento en milisegundos
-     */
-    double getPlayer1LastMoveTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo del último movimiento del jugador 2
-     * @return Tiempo de movimiento en milisegundos
-     */
-    double getPlayer2LastMoveTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo total acumulado de movimientos del jugador 1
-     * @return Tiempo total en milisegundos
-     */
-    double getPlayer1TotalMoveTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo total acumulado de movimientos del jugador 2
-     * @return Tiempo total en milisegundos
-     */
-    double getPlayer2TotalMoveTime() const;
-    
-    /**
      * @brief Obtiene el número de movimientos realizados por el jugador 1
      * @return Número de movimientos
      */
@@ -147,22 +111,22 @@ public:
     double getLastRefreshTime() const;
     
     /**
-     * @brief Obtiene el tiempo de la última validación de estado
-     * @return Tiempo de validación en milisegundos
-     */
-    double getLastValidationTime() const;
-    
-    /**
      * @brief Establece el tiempo del último refresh del display
      * @param time Tiempo en milisegundos
      */
     void setLastRefreshTime(double time);
     
     /**
-     * @brief Establece el tiempo de la última validación de estado
-     * @param time Tiempo en milisegundos
+     * @brief Obtiene el tiempo de construcción del grid
+     * @return Tiempo de construcción en milisegundos
      */
-    void setLastValidationTime(double time);
+    double getGridCreationTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo de renderizado del display
+     * @return Tiempo de renderizado en milisegundos
+     */
+    double getDisplayRenderTime() const;
     
 private:
     /**

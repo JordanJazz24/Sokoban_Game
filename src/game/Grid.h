@@ -38,16 +38,13 @@ private:
     int numRows;                   ///< Número de filas en la matriz
     int numCols;                   ///< Número de columnas en la matriz
     std::stack<Node*>* goalStack;  ///< Pila para las cajas en la posición final
-    double player1CreationTime;    ///< Tiempo de creación del jugador 1 en ms
-    double player2CreationTime;    ///< Tiempo de creación del jugador 2 en ms
-    double player1LastMoveTime;    ///< Tiempo del último movimiento del jugador 1 en ms
-    double player2LastMoveTime;    ///< Tiempo del último movimiento del jugador 2 en ms
-    double player1TotalMoveTime;   ///< Tiempo total acumulado de movimientos del jugador 1 en ms
-    double player2TotalMoveTime;   ///< Tiempo total acumulado de movimientos del jugador 2 en ms
     int player1MoveCount;          ///< Número de movimientos del jugador 1
     int player2MoveCount;          ///< Número de movimientos del jugador 2
     double lastRefreshTime;        ///< Tiempo del último refresh completo del display en ms
-    double lastValidationTime;     ///< Tiempo de la última validación de estado en ms
+    
+    // Variables para medición de funciones candidatas a paralelización
+    double gridCreationTime;       ///< Tiempo de construcción del grid en ms
+    double displayRenderTime;      ///< Tiempo de renderizado del display en ms
 
 public:
     /**
@@ -97,42 +94,6 @@ public:
     int getBoxesInGoals() const;
     
     /**
-     * @brief Obtiene el tiempo de creación del jugador 1
-     * @return Tiempo de creación en milisegundos
-     */
-    double getPlayer1CreationTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo de creación del jugador 2
-     * @return Tiempo de creación en milisegundos
-     */
-    double getPlayer2CreationTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo del último movimiento del jugador 1
-     * @return Tiempo de movimiento en milisegundos
-     */
-    double getPlayer1LastMoveTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo del último movimiento del jugador 2
-     * @return Tiempo de movimiento en milisegundos
-     */
-    double getPlayer2LastMoveTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo total acumulado de movimientos del jugador 1
-     * @return Tiempo total en milisegundos
-     */
-    double getPlayer1TotalMoveTime() const;
-    
-    /**
-     * @brief Obtiene el tiempo total acumulado de movimientos del jugador 2
-     * @return Tiempo total en milisegundos
-     */
-    double getPlayer2TotalMoveTime() const;
-    
-    /**
      * @brief Obtiene el número de movimientos realizados por el jugador 1
      * @return Número de movimientos
      */
@@ -151,22 +112,22 @@ public:
     double getLastRefreshTime() const;
     
     /**
-     * @brief Obtiene el tiempo de la última validación de estado
-     * @return Tiempo de validación en milisegundos
-     */
-    double getLastValidationTime() const;
-    
-    /**
      * @brief Establece el tiempo del último refresh del display
      * @param time Tiempo en milisegundos
      */
     void setLastRefreshTime(double time);
     
     /**
-     * @brief Establece el tiempo de la última validación de estado
-     * @param time Tiempo en milisegundos
+     * @brief Obtiene el tiempo de construcción del grid
+     * @return Tiempo de construcción en milisegundos
      */
-    void setLastValidationTime(double time);
+    double getGridCreationTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo de renderizado del display
+     * @return Tiempo de renderizado en milisegundos
+     */
+    double getDisplayRenderTime() const;
 
 private:
     /**

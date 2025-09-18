@@ -122,30 +122,6 @@ double Level::getLoadTime() const {
     return loadTimeMs;
 }
 
-double Level::getPlayer1CreationTime() const {
-    return grid ? grid->getPlayer1CreationTime() : 0.0;
-}
-
-double Level::getPlayer2CreationTime() const {
-    return grid ? grid->getPlayer2CreationTime() : 0.0;
-}
-
-double Level::getPlayer1LastMoveTime() const {
-    return grid ? grid->getPlayer1LastMoveTime() : 0.0;
-}
-
-double Level::getPlayer2LastMoveTime() const {
-    return grid ? grid->getPlayer2LastMoveTime() : 0.0;
-}
-
-double Level::getPlayer1TotalMoveTime() const {
-    return grid ? grid->getPlayer1TotalMoveTime() : 0.0;
-}
-
-double Level::getPlayer2TotalMoveTime() const {
-    return grid ? grid->getPlayer2TotalMoveTime() : 0.0;
-}
-
 int Level::getPlayer1MoveCount() const {
     return grid ? grid->getPlayer1MoveCount() : 0;
 }
@@ -158,18 +134,16 @@ double Level::getLastRefreshTime() const {
     return grid ? grid->getLastRefreshTime() : 0.0;
 }
 
-double Level::getLastValidationTime() const {
-    return grid ? grid->getLastValidationTime() : 0.0;
-}
-
 void Level::setLastRefreshTime(double time) {
     if (grid) {
         grid->setLastRefreshTime(time);
     }
 }
 
-void Level::setLastValidationTime(double time) {
-    if (grid) {
-        grid->setLastValidationTime(time);
-    }
+double Level::getGridCreationTime() const {
+    return grid ? grid->getGridCreationTime() : 0.0;
+}
+
+double Level::getDisplayRenderTime() const {
+    return grid ? grid->getDisplayRenderTime() : 0.0;
 }

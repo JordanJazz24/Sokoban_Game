@@ -7,11 +7,8 @@ Grid::Grid(char** levelMatrix, int rows, int cols)
     : head(nullptr), player1Node(nullptr), player2Node(nullptr), 
       player1InPoint(false), player2InPoint(false),
       numBoxes(0), numRows(rows), numCols(cols),
-      player1CreationTime(0.0), player2CreationTime(0.0),
-      player1LastMoveTime(0.0), player2LastMoveTime(0.0),
-      player1TotalMoveTime(0.0), player2TotalMoveTime(0.0),
       player1MoveCount(0), player2MoveCount(0),
-      lastRefreshTime(0.0), lastValidationTime(0.0) {
+      lastRefreshTime(0.0), gridCreationTime(0.0), displayRenderTime(0.0) {
     goalStack = new std::stack<Node*>();
     createGridStructure(levelMatrix);
 }
@@ -22,6 +19,9 @@ Grid::~Grid() {
 }
 
 void Grid::createGridStructure(char** matrix) {
+    // Iniciar medición del tiempo de construcción del grid
+    auto startTime = std::chrono::high_resolution_clock::now();
+    
     Node* head_main = nullptr;
     Node* upper = new Node(-1);
 
@@ -34,18 +34,10 @@ void Grid::createGridStructure(char** matrix) {
 
             // Identificar elementos especiales
             if (matrix[i][j] == PLAYER) {
-                auto startTime = std::chrono::high_resolution_clock::now();
                 this->player1Node = temp;
-                auto endTime = std::chrono::high_resolution_clock::now();
-                auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-                this->player1CreationTime = duration.count() / 1000.0;
             }
             if (matrix[i][j] == PLAYER2) {
-                auto startTime = std::chrono::high_resolution_clock::now();
                 this->player2Node = temp;
-                auto endTime = std::chrono::high_resolution_clock::now();
-                auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-                this->player2CreationTime = duration.count() / 1000.0;
             }
             if (matrix[i][j] == BOX) {
                 this->numBoxes++;
@@ -76,6 +68,11 @@ void Grid::createGridStructure(char** matrix) {
     }
 
     head = head_main;
+    
+    // Finalizar medición del tiempo de construcción del grid
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+    gridCreationTime = duration.count() / 1000.0;
 }
 
 void Grid::clearGrid() {
@@ -93,24 +90,10 @@ void Grid::clearGrid() {
 }
 
 bool Grid::movePlayer(Player player, Movement movement) {
-    // Iniciar medición del tiempo de movimiento
-    auto startTime = std::chrono::high_resolution_clock::now();
-    
     Node* playerNode = getPlayerNode(player);
     bool& playerInPoint = (player == PLAYER_1) ? player1InPoint : player2InPoint;
     
     if (!playerNode) {
-        // Finalizar medición aunque falle
-        auto endTime = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-        double moveTime = duration.count() / 1000.0;
-        if (player == PLAYER_1) {
-            player1LastMoveTime = moveTime;
-            player1TotalMoveTime += moveTime;
-        } else {
-            player2LastMoveTime = moveTime;
-            player2TotalMoveTime += moveTime;
-        }
         return false;
     }
     
@@ -124,32 +107,10 @@ bool Grid::movePlayer(Player player, Movement movement) {
         case LEFT:  directionNode = playerNode->left; break;
         case RIGHT: directionNode = playerNode->right; break;
         default: 
-            // Finalizar medición aunque falle
-            auto endTime = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-            double moveTime = duration.count() / 1000.0;
-            if (player == PLAYER_1) {
-                player1LastMoveTime = moveTime;
-                player1TotalMoveTime += moveTime;
-            } else {
-                player2LastMoveTime = moveTime;
-                player2TotalMoveTime += moveTime;
-            }
             return false;
     }
 
     if (!directionNode) {
-        // Finalizar medición aunque falle
-        auto endTime = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-        double moveTime = duration.count() / 1000.0;
-        if (player == PLAYER_1) {
-            player1LastMoveTime = moveTime;
-            player1TotalMoveTime += moveTime;
-        } else {
-            player2LastMoveTime = moveTime;
-            player2TotalMoveTime += moveTime;
-        }
         return false;
     }
 
@@ -211,21 +172,11 @@ bool Grid::movePlayer(Player player, Movement movement) {
         success = true;
     }
 
-    // Finalizar medición del tiempo de movimiento
-    auto endTime = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-    double moveTime = duration.count() / 1000.0;
-    
-    if (player == PLAYER_1) {
-        player1LastMoveTime = moveTime;
-        player1TotalMoveTime += moveTime;
-        if (success) {
+    // Actualizar contadores de movimientos
+    if (success) {
+        if (player == PLAYER_1) {
             player1MoveCount++;
-        }
-    } else {
-        player2LastMoveTime = moveTime;
-        player2TotalMoveTime += moveTime;
-        if (success) {
+        } else {
             player2MoveCount++;
         }
     }
@@ -265,6 +216,9 @@ bool Grid::handleBoxMovement(Node* boxNode, Node* targetNode) {
 }
 
 void Grid::printGrid() const {
+    // Iniciar medición del tiempo de renderizado del display
+    auto startTime = std::chrono::high_resolution_clock::now();
+    
     Node* downptr = head;
     Node* rightptr;
     while (downptr) {
@@ -276,6 +230,12 @@ void Grid::printGrid() const {
         std::cout << "\n";
         downptr = downptr->down;
     }
+    
+    // Finalizar medición del tiempo de renderizado del display
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+    // Necesitamos hacer cast para modificar en función const
+    const_cast<Grid*>(this)->displayRenderTime = duration.count() / 1000.0;
 }
 
 void Grid::resetGrid(char** levelMatrix, int rows, int cols) {
@@ -295,16 +255,11 @@ void Grid::resetGrid(char** levelMatrix, int rows, int cols) {
     head = nullptr;
     player1InPoint = false;
     player2InPoint = false;
-    player1CreationTime = 0.0;
-    player2CreationTime = 0.0;
-    player1LastMoveTime = 0.0;
-    player2LastMoveTime = 0.0;
-    player1TotalMoveTime = 0.0;
-    player2TotalMoveTime = 0.0;
     player1MoveCount = 0;
     player2MoveCount = 0;
     lastRefreshTime = 0.0;
-    lastValidationTime = 0.0;
+    gridCreationTime = 0.0;
+    displayRenderTime = 0.0;
     
     createGridStructure(levelMatrix);
 }
@@ -367,30 +322,6 @@ void Grid::swapSymbols(Player player, Node*& targetNode) {
     }
 }
 
-double Grid::getPlayer1CreationTime() const {
-    return player1CreationTime;
-}
-
-double Grid::getPlayer2CreationTime() const {
-    return player2CreationTime;
-}
-
-double Grid::getPlayer1LastMoveTime() const {
-    return player1LastMoveTime;
-}
-
-double Grid::getPlayer2LastMoveTime() const {
-    return player2LastMoveTime;
-}
-
-double Grid::getPlayer1TotalMoveTime() const {
-    return player1TotalMoveTime;
-}
-
-double Grid::getPlayer2TotalMoveTime() const {
-    return player2TotalMoveTime;
-}
-
 int Grid::getPlayer1MoveCount() const {
     return player1MoveCount;
 }
@@ -403,14 +334,14 @@ double Grid::getLastRefreshTime() const {
     return lastRefreshTime;
 }
 
-double Grid::getLastValidationTime() const {
-    return lastValidationTime;
-}
-
 void Grid::setLastRefreshTime(double time) {
     lastRefreshTime = time;
 }
 
-void Grid::setLastValidationTime(double time) {
-    lastValidationTime = time;
+double Grid::getGridCreationTime() const {
+    return gridCreationTime;
+}
+
+double Grid::getDisplayRenderTime() const {
+    return displayRenderTime;
 }
