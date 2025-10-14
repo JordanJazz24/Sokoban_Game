@@ -2,6 +2,14 @@
 #include "../utils/Types.h"
 #include <iostream>
 #include <chrono>
+#include <omp.h>
+#include <atomic>
+#include <vector>
+
+// ============================================================================
+// DEFINIR VERSIÓN A USAR (comentar/descomentar según necesites)
+// ============================================================================
+ #define USE_SEQUENTIAL_VERSION  // Descomentar para versión SERIAL
 
 Grid::Grid(char** levelMatrix, int rows, int cols) 
     : head(nullptr), player1Node(nullptr), player2Node(nullptr), 
@@ -18,9 +26,16 @@ Grid::~Grid() {
     delete goalStack;
 }
 
+#ifdef USE_SEQUENTIAL_VERSION
+
+// ============================================================================
+// VERSIÓN 1: createGridStructure() - SECUENCIAL
+// ============================================================================
 void Grid::createGridStructure(char** matrix) {
-    // Iniciar medición del tiempo de construcción del grid
     auto startTime = std::chrono::high_resolution_clock::now();
+    
+    // Contadores para análisis
+    int playerCount = 0, boxCount = 0, goalCount = 0, wallCount = 0;
     
     Node* head_main = nullptr;
     Node* upper = new Node(-1);
@@ -30,16 +45,50 @@ void Grid::createGridStructure(char** matrix) {
         Node* prev = new Node(-1);
 
         for (int j = 0; j < numCols; j++) {
-            Node* temp = new Node(matrix[i][j]);
+            char symbol = matrix[i][j];
+            
+            // 1. ANÁLISIS de elementos (trabajo adicional)
+            switch (symbol) {
+                case PLAYER: case PLAYER2: case PLAYER_ON_GOAL: case PLAYER2_ON_GOAL:
+                    playerCount++;
+                    break;
+                case BOX: case BOX_ON_GOAL:
+                    boxCount++;
+                    break;
+                case GOAL:
+                    goalCount++;
+                    break;
+                case WALL:
+                    wallCount++;
+                    break;
+            }
+            
+            // 2. VALIDACIÓN de integridad (trabajo adicional)
+            bool isValidSymbol = (symbol == WALL || symbol == EMPTY || symbol == BOX ||
+                                 symbol == GOAL || symbol == PLAYER || symbol == PLAYER2 ||
+                                 symbol == PLAYER_ON_GOAL || symbol == PLAYER2_ON_GOAL ||
+                                 symbol == BOX_ON_GOAL);
+            if (!isValidSymbol) {
+                symbol = EMPTY; // Normalizar caracteres inválidos
+            }
+            
+            // 3. SIMULACIÓN de procesamiento por nodo (trabajo adicional)
+            volatile int dummy = 0;
+            for (int k = 0; k < 30; ++k) {
+                dummy += (symbol * i * j + k) % 7;
+            }
+            
+            // 4. CREAR nodo con símbolo procesado
+            Node* temp = new Node(symbol);
 
             // Identificar elementos especiales
-            if (matrix[i][j] == PLAYER) {
+            if (symbol == PLAYER) {
                 this->player1Node = temp;
             }
-            if (matrix[i][j] == PLAYER2) {
+            if (symbol == PLAYER2) {
                 this->player2Node = temp;
             }
-            if (matrix[i][j] == BOX) {
+            if (symbol == BOX) {
                 this->numBoxes++;
             }
 
@@ -69,11 +118,123 @@ void Grid::createGridStructure(char** matrix) {
 
     head = head_main;
     
-    // Finalizar medición del tiempo de construcción del grid
     auto endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
     gridCreationTime = duration.count() / 1000.0;
+    
+ 
 }
+
+#else
+
+// ============================================================================
+// VERSIÓN 2: createGridStructure() - PARALELA (OpenMP)
+// ============================================================================
+void Grid::createGridStructure(char** matrix) {
+    auto startTime = std::chrono::high_resolution_clock::now();
+    
+    // Contadores atómicos para thread-safety
+    std::atomic<int> playerCount(0), boxCount(0), goalCount(0), wallCount(0);
+    
+    // Crear estructura de nodos (pre-asignación en paralelo)
+    std::vector<std::vector<Node*>> nodeMatrix(numRows, std::vector<Node*>(numCols, nullptr));
+    
+    // FASE 1: Creación de nodos en paralelo con análisis
+    #pragma omp parallel for schedule(dynamic, 4)
+    for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < numCols; j++) {
+            char symbol = matrix[i][j];
+            
+            // 1. ANÁLISIS de elementos (trabajo adicional)
+            switch (symbol) {
+                case PLAYER: case PLAYER2: case PLAYER_ON_GOAL: case PLAYER2_ON_GOAL:
+                    playerCount++;
+                    break;
+                case BOX: case BOX_ON_GOAL:
+                    boxCount++;
+                    break;
+                case GOAL:
+                    goalCount++;
+                    break;
+                case WALL:
+                    wallCount++;
+                    break;
+            }
+            
+            // 2. VALIDACIÓN de integridad (trabajo adicional)
+            bool isValidSymbol = (symbol == WALL || symbol == EMPTY || symbol == BOX ||
+                                 symbol == GOAL || symbol == PLAYER || symbol == PLAYER2 ||
+                                 symbol == PLAYER_ON_GOAL || symbol == PLAYER2_ON_GOAL ||
+                                 symbol == BOX_ON_GOAL);
+            if (!isValidSymbol) {
+                symbol = EMPTY;
+            }
+            
+            // 3. SIMULACIÓN de procesamiento por nodo (trabajo adicional)
+            volatile int dummy = 0;
+            for (int k = 0; k < 30; ++k) {
+                dummy += (symbol * i * j + k) % 7;
+            }
+            
+            // 4. CREAR nodo
+            nodeMatrix[i][j] = new Node(symbol);
+            
+            // Identificar elementos especiales
+            if (symbol == PLAYER) {
+                this->player1Node = nodeMatrix[i][j];
+            }
+            if (symbol == PLAYER2) {
+                this->player2Node = nodeMatrix[i][j];
+            }
+            if (symbol == BOX) {
+                this->numBoxes++;
+            }
+        }
+    }
+    
+    // FASE 2: Conectar nodos (secuencial, ya que requiere punteros)
+    Node* upper = new Node(-1);
+    Node* head_main = nullptr;
+    
+    for (int i = 0; i < numRows; i++) {
+        Node* prev = new Node(-1);
+        
+        for (int j = 0; j < numCols; j++) {
+            Node* temp = nodeMatrix[i][j];
+            
+            if (j == 0 && i == 0) head_main = temp;
+            
+            // Conectar horizontalmente
+            temp->left = prev;
+            prev->right = temp;
+            
+            // Conectar verticalmente
+            if (i == numRows - 1) temp->down = nullptr;
+            if (!upper->right) {
+                upper->right = new Node(-1);
+            }
+            upper = upper->right;
+            
+            temp->up = upper;
+            upper->down = temp;
+            prev = temp;
+            
+            if (j == numCols - 1) prev->right = nullptr;
+        }
+        
+        upper = nodeMatrix[i][0]->left;
+    }
+    
+    head = head_main;
+    
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+    gridCreationTime = duration.count() / 1000.0;
+    
+ 
+}
+
+#endif
 
 void Grid::clearGrid() {
     Node* current = head;
@@ -215,28 +376,138 @@ bool Grid::handleBoxMovement(Node* boxNode, Node* targetNode) {
     return false;
 }
 
+#ifdef USE_SEQUENTIAL_VERSION
+
+// ============================================================================
+// VERSIÓN 1: printGrid() - SECUENCIAL
+// ============================================================================
 void Grid::printGrid() const {
-    // Iniciar medición del tiempo de renderizado del display
     auto startTime = std::chrono::high_resolution_clock::now();
     
+    // Contadores para análisis del display
+    int totalCells = 0, specialChars = 0;
+    
     Node* downptr = head;
-    Node* rightptr;
     while (downptr) {
-        rightptr = downptr;
+        Node* rightptr = downptr;
         while (rightptr) {
-            std::cout << rightptr->symbol << " ";
+            char symbol = rightptr->symbol;
+            
+            // 1. ANÁLISIS del carácter (trabajo adicional)
+            totalCells++;
+            if (symbol != EMPTY && symbol != WALL) {
+                specialChars++;
+            }
+            
+            // 2. VALIDACIÓN de símbolo (trabajo adicional)
+            bool isValid = (symbol == WALL || symbol == EMPTY || symbol == BOX ||
+                           symbol == GOAL || symbol == PLAYER || symbol == PLAYER2 ||
+                           symbol == PLAYER_ON_GOAL || symbol == PLAYER2_ON_GOAL ||
+                           symbol == BOX_ON_GOAL);
+            
+            // 3. SIMULACIÓN de procesamiento de color/estilo (trabajo adicional)
+            volatile int colorCode = 0;
+            for (int k = 0; k < 20; ++k) {
+                colorCode += (symbol * totalCells + k) % 5;
+            }
+            
+            // 4. RENDERIZADO del carácter
+            char displayChar = isValid ? symbol : EMPTY;
+            std::cout << displayChar << " ";
+            
             rightptr = rightptr->right;
         }
         std::cout << "\n";
         downptr = downptr->down;
     }
     
-    // Finalizar medición del tiempo de renderizado del display
     auto endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-    // Necesitamos hacer cast para modificar en función const
     const_cast<Grid*>(this)->displayRenderTime = duration.count() / 1000.0;
 }
+
+#else
+
+// ============================================================================
+// VERSIÓN 2: printGrid() - PARALELA (OpenMP)
+// ============================================================================
+void Grid::printGrid() const {
+    auto startTime = std::chrono::high_resolution_clock::now();
+    
+    // Contadores atómicos
+    std::atomic<int> totalCells(0), specialChars(0);
+    
+    // FASE 1: Recolectar filas en paralelo con análisis
+    std::vector<std::string> rows(numRows);
+    
+    #pragma omp parallel
+    {
+        // Cada hilo procesa filas
+        #pragma omp for schedule(dynamic, 2)
+        for (int rowIdx = 0; rowIdx < numRows; ++rowIdx) {
+            std::string rowStr;
+            rowStr.reserve(numCols * 2); // Pre-reservar espacio
+            
+            // Navegar a la fila correcta
+            Node* downptr = head;
+            for (int i = 0; i < rowIdx && downptr; ++i) {
+                downptr = downptr->down;
+            }
+            
+            if (!downptr) continue;
+            
+            Node* rightptr = downptr;
+            int cellCount = 0;
+            int specialCount = 0;
+            
+            while (rightptr) {
+                char symbol = rightptr->symbol;
+                
+                // 1. ANÁLISIS del carácter (trabajo adicional)
+                cellCount++;
+                if (symbol != EMPTY && symbol != WALL) {
+                    specialCount++;
+                }
+                
+                // 2. VALIDACIÓN de símbolo (trabajo adicional)
+                bool isValid = (symbol == WALL || symbol == EMPTY || symbol == BOX ||
+                               symbol == GOAL || symbol == PLAYER || symbol == PLAYER2 ||
+                               symbol == PLAYER_ON_GOAL || symbol == PLAYER2_ON_GOAL ||
+                               symbol == BOX_ON_GOAL);
+                
+                // 3. SIMULACIÓN de procesamiento de color/estilo (trabajo adicional)
+                volatile int colorCode = 0;
+                for (int k = 0; k < 20; ++k) {
+                    colorCode += (symbol * cellCount + k) % 5;
+                }
+                
+                // 4. AGREGAR carácter al buffer de la fila
+                char displayChar = isValid ? symbol : EMPTY;
+                rowStr += displayChar;
+                rowStr += ' ';
+                
+                rightptr = rightptr->right;
+            }
+            
+            rows[rowIdx] = rowStr;
+            
+            // Actualizar contadores globales
+            totalCells += cellCount;
+            specialChars += specialCount;
+        }
+    }
+    
+    // FASE 2: Imprimir filas (secuencial para mantener orden)
+    for (const auto& row : rows) {
+        std::cout << row << "\n";
+    }
+    
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+    const_cast<Grid*>(this)->displayRenderTime = duration.count() / 1000.0;
+}
+
+#endif
 
 void Grid::resetGrid(char** levelMatrix, int rows, int cols) {
     clearGrid();

@@ -9,7 +9,7 @@
 // ============================================================================
 // VERSIÓN SECUENCIAL (comentar para usar la versión paralela)
 // ============================================================================
-// #define USE_SEQUENTIAL_VERSION
+ #define USE_SEQUENTIAL_VERSION
 
 #ifdef USE_SEQUENTIAL_VERSION
 
@@ -55,8 +55,7 @@ char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
     }
     cols = static_cast<int>(maxLen);
     
-    std::cout << "\n🔹 VERSIÓN SECUENCIAL" << std::endl;
-    std::cout << "📊 Tamaño de la matriz: " << rows << "x" << cols << std::endl;
+
 
     // --- PASO 3: Procesar matriz con análisis y validación SECUENCIAL ---
     char** matrix = new char*[rows];
@@ -188,10 +187,7 @@ char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
     }
     cols = static_cast<int>(maxLen);
     
-    const int numThreads = omp_get_max_threads();
-    std::cout << "\n🚀 VERSIÓN PARALELA (OpenMP)" << std::endl;
-    std::cout << "📊 Tamaño de la matriz: " << rows << "x" << cols << std::endl;
-    std::cout << "🔧 Hilos disponibles: " << numThreads << std::endl;
+
 
     // --- PASO 3: Procesar matriz con análisis y validación PARALELA ---
     char** matrix = new char*[rows];
