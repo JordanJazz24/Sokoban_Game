@@ -8,6 +8,9 @@
     ],
     "files.associations": {
         "iosfwd": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "atomic": "cpp",
+        "iostream": "cpp",
+        "iomanip": "cpp"
     }
 }

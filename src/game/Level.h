@@ -19,7 +19,8 @@ private:
     Grid* grid;                         ///< Grid del nivel actual
     int levelNumber;                    ///< Número del nivel actual
     std::vector<Movement> movements;    ///< Historial de movimientos
-    double loadTimeMs;                  ///< Tiempo de carga del archivo en milisegundos
+    double fileLoadTimeMs;              ///< Tiempo puro de carga del archivo (FileManager::loadLevel)
+    double totalLoadTimeMs;             ///< Tiempo total de carga del nivel (incluye Grid creation)
     
 public:
     /**
@@ -87,10 +88,16 @@ public:
     void setMovements(const std::vector<Movement>& newMovements);
     
     /**
-     * @brief Obtiene el tiempo de carga del archivo del nivel
+     * @brief Obtiene el tiempo de carga del archivo del nivel (FileManager::loadLevel puro)
      * @return Tiempo de carga en milisegundos
      */
     double getLoadTime() const;
+    
+    /**
+     * @brief Obtiene el tiempo total de carga del nivel (archivo + Grid creation)
+     * @return Tiempo total de carga en milisegundos
+     */
+    double getTotalLoadTime() const;
     
     /**
      * @brief Obtiene el número de movimientos realizados por el jugador 1

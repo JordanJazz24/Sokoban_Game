@@ -6,6 +6,9 @@
 #include <chrono>
 
 Game::Game() : currentLevel(nullptr), currentLevelNumber(1) {
+    // Configurar la consola para usar UTF-8
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
 }
 
 Game::~Game() {
@@ -106,34 +109,100 @@ void Game::runLevel() {
         currentLevel->display();
         std::cout << std::endl;
         
-        // Mostrar información de rendimiento útil
-        std::cout << "ESTADÍSTICAS DEL JUEGO:" << std::endl;
+        // ═══════════════════════════════════════════════════════════════════
+        // ESTADÍSTICAS DEL JUEGO
+        // ═══════════════════════════════════════════════════════════════════
+        std::cout << "+-----------------------------------------------------------+" << std::endl;
+        std::cout << "|        ESTADISTICAS Y RENDIMIENTO DEL JUEGO               |" << std::endl;
+        std::cout << "+-----------------------------------------------------------+" << std::endl;
         
-        // Mostrar número de movimientos para cada jugador
+        // Movimientos de jugadores
         int player1Moves = currentLevel->getPlayer1MoveCount();
         int player2Moves = currentLevel->getPlayer2MoveCount();
-        std::cout << "- Jugador 1 (@): " << player1Moves << " movimientos" << std::endl;
-        std::cout << "- Jugador 2 (&): " << player2Moves << " movimientos" << std::endl;
+        std::cout << "\n[MOVIMIENTOS]" << std::endl;
+        std::cout << "   * Jugador 1 (@): " << std::setw(4) << player1Moves << " movimientos" << std::endl;
+        std::cout << "   * Jugador 2 (&): " << std::setw(4) << player2Moves << " movimientos" << std::endl;
+        std::cout << std::endl;
         
-        // Mostrar tiempos de sistema relevantes
-        std::cout << "RENDIMIENTO DEL SISTEMA:" << std::endl;
-        std::cout << "- Tiempo de carga del nivel: " << std::fixed << std::setprecision(3) 
-                  << currentLevel->getLoadTime() << " ms" << std::endl;
-        std::cout << "- Tiempo de construcción del grid: " << std::fixed << std::setprecision(3) 
-                  << currentLevel->getGridCreationTime() << " ms" << std::endl;
-        std::cout << "- Tiempo de renderizado display: " << std::fixed << std::setprecision(3) 
-                  << currentLevel->getDisplayRenderTime() << " ms" << std::endl;
-        std::cout << "- Tiempo de refresh completo: " << std::fixed << std::setprecision(3) 
-                  << currentLevel->getLastRefreshTime() << " ms" << std::endl;
+        // ═══════════════════════════════════════════════════════════════════
+        // TIEMPOS DE PROCESAMIENTO Y ANÁLISIS DE RENDIMIENTO
+        // ═══════════════════════════════════════════════════════════════════
+        std::cout << "[METRICAS DE RENDIMIENTO - Analisis de Paralelizacion]" << std::endl;
+        std::cout << "+------------------------------------------------+--------------+----------+" << std::endl;
+        std::cout << "| Metodo / Operacion                             | Tiempo (ms)  | % Frame  |" << std::endl;
+        std::cout << "+------------------------------------------------+--------------+----------+" << std::endl;
         
-        // Finalizar medición del tiempo de refresh
+        // Finalizar medición del tiempo de refresh primero para calcular porcentajes
         auto refreshEnd = std::chrono::high_resolution_clock::now();
         auto refreshDuration = std::chrono::duration_cast<std::chrono::microseconds>(refreshEnd - refreshStart);
         double refreshTime = refreshDuration.count() / 1000.0;
         currentLevel->setLastRefreshTime(refreshTime);
         
+        // Obtener tiempos individuales
+        double fileLoadTime = currentLevel->getLoadTime();
+        double gridCreationTime = currentLevel->getGridCreationTime();
+        double displayRenderTime = currentLevel->getDisplayRenderTime();
+        double totalLoadTime = currentLevel->getTotalLoadTime();
+        
+        // Calcular porcentajes respecto al refresh completo
+        auto calcPercent = [refreshTime](double time) -> double {
+            return (refreshTime > 0) ? (time / refreshTime * 100.0) : 0.0;
+        };
+        
+        // 1. FASE DE CARGA INICIAL (solo se ejecuta al inicio del nivel)
+        std::cout << "| [CARGA INICIAL DEL NIVEL]                      |              |          |" << std::endl;
+        std::cout << "|   +- FileManager::loadLevel()                  | " 
+                  << std::fixed << std::setprecision(3) << std::setw(10) 
+                  << fileLoadTime << " ms |   N/A    |" << std::endl;
+        
+        std::cout << "|   +- Grid::createGridStructure()               | " 
+                  << std::fixed << std::setprecision(3) << std::setw(10) 
+                  << gridCreationTime << " ms |   N/A    |" << std::endl;
+        
+        std::cout << "|   +- Total Carga Nivel                         | " 
+                  << std::fixed << std::setprecision(3) << std::setw(10) 
+                  << totalLoadTime << " ms |   N/A    |" << std::endl;
+        
+        std::cout << "+------------------------------------------------+--------------+----------+" << std::endl;
+        
+        // 2. FASE DE RENDERIZADO (se ejecuta en cada frame)
+        std::cout << "| [RENDERIZADO POR FRAME]                        |              |          |" << std::endl;
+        std::cout << "|   +- Grid::printGrid()                         | " 
+                  << std::fixed << std::setprecision(3) << std::setw(10) 
+                  << displayRenderTime << " ms | " 
+                  << std::setw(6) << std::setprecision(2) << calcPercent(displayRenderTime) << " % |" << std::endl;
+        
+        double uiOverhead = refreshTime - displayRenderTime;
+        std::cout << "|   +- Overhead UI/Stats                         | " 
+                  << std::fixed << std::setprecision(3) << std::setw(10) 
+                  << uiOverhead << " ms | " 
+                  << std::setw(6) << std::setprecision(2) << calcPercent(uiOverhead) << " % |" << std::endl;
+        
+        std::cout << "|   +- Refresh Total                             | " 
+                  << std::fixed << std::setprecision(3) << std::setw(10) 
+                  << refreshTime << " ms | 100.00 % |" << std::endl;
+        
+        std::cout << "+------------------------------------------------+--------------+----------+" << std::endl;
+        
+        // 3. ANÁLISIS DE RENDIMIENTO
+        double fps = (refreshTime > 0) ? (1000.0 / refreshTime) : 0.0;
+        std::cout << "| [ANALISIS DE RENDIMIENTO]                      |              |          |" << std::endl;
+        std::cout << "|   * FPS Estimado: " << std::setw(5) << std::setprecision(1) << fps << " frames/seg           |              |          |" << std::endl;
+        
+        if (displayRenderTime > 16.67) {
+            std::cout << "|   [!] Renderizado > 16.67ms (bajo de 60 FPS)  |              |          |" << std::endl;
+        } else {
+            std::cout << "|   [OK] Rendimiento optimo para 60+ FPS        |              |          |" << std::endl;
+        }
+        
+        std::cout << "+------------------------------------------------+--------------+----------+" << std::endl;
         std::cout << std::endl;
-        std::cout << "Controles - Jugador 1: WASD | Jugador 2: Flechas | Q: Salir | G: Guardar | R: Reiniciar" << std::endl;
+        
+        // ═══════════════════════════════════════════════════════════════════
+        // CONTROLES
+        // ═══════════════════════════════════════════════════════════════════
+        std::cout << "[CONTROLES] [WASD] Jugador 1 | [Flechas] Jugador 2" << std::endl;
+        std::cout << "[OPCIONES]  [Q] Salir | [G] Guardar | [R] Reiniciar" << std::endl;
         
         // Esperar hasta que haya al menos una entrada
         while (!isKeyAvailable()) {

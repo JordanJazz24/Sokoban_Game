@@ -23,6 +23,16 @@ public:
     static char** loadLevel(int levelNumber, int& rows, int& cols);
     
     /**
+     * @brief Carga un nivel desde archivo con medición de tiempo
+     * @param levelNumber Número del nivel a cargar
+     * @param rows Referencia donde se almacenará el número de filas
+     * @param cols Referencia donde se almacenará el número de columnas
+     * @param loadTimeMs Referencia donde se almacenará el tiempo de carga en ms
+     * @return Matriz de caracteres representando el nivel, nullptr si hay error
+     */
+    static char** loadLevel(int levelNumber, int& rows, int& cols, double& loadTimeMs);
+    
+    /**
      * @brief Libera la memoria de una matriz de nivel
      * @param matrix Matriz a liberar
      * @param rows Número de filas de la matriz

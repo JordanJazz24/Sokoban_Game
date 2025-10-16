@@ -9,7 +9,7 @@
 // ============================================================================
 // DEFINIR VERSIÓN A USAR (comentar/descomentar según necesites)
 // ============================================================================
- #define USE_SEQUENTIAL_VERSION  // Descomentar para versión SERIAL
+ //#define USE_SEQUENTIAL_VERSION  // Descomentar para versión SERIAL
 
 Grid::Grid(char** levelMatrix, int rows, int cols) 
     : head(nullptr), player1Node(nullptr), player2Node(nullptr), 

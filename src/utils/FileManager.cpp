@@ -14,6 +14,11 @@
 #ifdef USE_SEQUENTIAL_VERSION
 
 char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
+    double dummyTime;
+    return loadLevel(levelNumber, rows, cols, dummyTime);
+}
+
+char** FileManager::loadLevel(int levelNumber, int& rows, int& cols, double& loadTimeMs) {
     auto startTime = std::chrono::high_resolution_clock::now();
     
     std::string filename = getLevelFileName(levelNumber);
@@ -120,22 +125,8 @@ char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
     
     auto endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+    loadTimeMs = duration.count() / 1000.0;
     
-    /*
-    // Reportar resultados
-    std::cout << "\n📈 Análisis completado:" << std::endl;
-    std::cout << "   👤 Jugadores: " << playerCount << std::endl;
-    std::cout << "   📦 Cajas: " << boxCount << std::endl;
-    std::cout << "   🎯 Objetivos: " << goalCount << std::endl;
-    std::cout << "   🧱 Paredes: " << wallCount << std::endl;
-    if (invalidCharCount > 0) {
-        std::cout << "   ⚠️  Caracteres inválidos: " << invalidCharCount << std::endl;
-    }
-    std::cout << "\n⏱️  TIEMPO TOTAL (SECUENCIAL): " << duration.count() / 1000.0 
-              << " ms\n" << std::endl;
-
-              system("pause");
-              */
     return matrix;
 }
 
@@ -146,6 +137,11 @@ char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
 // ============================================================================
 
 char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
+    double dummyTime;
+    return loadLevel(levelNumber, rows, cols, dummyTime);
+}
+
+char** FileManager::loadLevel(int levelNumber, int& rows, int& cols, double& loadTimeMs) {
     auto startTime = std::chrono::high_resolution_clock::now();
     
     std::string filename = getLevelFileName(levelNumber);
@@ -254,19 +250,8 @@ char** FileManager::loadLevel(int levelNumber, int& rows, int& cols) {
     
     auto endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-    /*    // Reportar resultados
-    std::cout << "\n📈 Análisis completado:" << std::endl;
-    std::cout << "   👤 Jugadores: " << playerCount << std::endl;
-    std::cout << "   📦 Cajas: " << boxCount << std::endl;
-    std::cout << "   🎯 Objetivos: " << goalCount << std::endl;
-    std::cout << "   🧱 Paredes: " << wallCount << std::endl;
-    if (invalidCharCount > 0) {
-        std::cout << "   ⚠️  Caracteres inválidos: " << invalidCharCount << std::endl;
-    }
-    std::cout << "\n⏱️  TIEMPO TOTAL (PARALELO): " << duration.count() / 1000.0 
-              << " ms\n" << std::endl;
-              system("pause");
-*/
+    loadTimeMs = duration.count() / 1000.0;
+
     return matrix;
 }
 

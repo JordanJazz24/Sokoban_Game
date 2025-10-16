@@ -4,7 +4,8 @@
 #include <Windows.h>
 #include <chrono>
 
-Level::Level(int levelNum) : grid(nullptr), levelNumber(levelNum), loadTimeMs(0.0) {
+Level::Level(int levelNum) : grid(nullptr), levelNumber(levelNum), 
+    fileLoadTimeMs(0.0), totalLoadTimeMs(0.0) {
     loadLevel();
 }
 
@@ -13,13 +14,13 @@ Level::~Level() {
 }
 
 bool Level::loadLevel() {
-    // Iniciar medición del tiempo
-    auto startTime = std::chrono::high_resolution_clock::now();
+    // Iniciar medición del tiempo total
+    auto totalStartTime = std::chrono::high_resolution_clock::now();
     
     int rows, cols;
-    char** levelMatrix = FileManager::loadLevel(levelNumber, rows, cols);
     
-
+    // Medir el tiempo de FileManager::loadLevel() (puro)
+    char** levelMatrix = FileManager::loadLevel(levelNumber, rows, cols, fileLoadTimeMs);
     
     if (levelMatrix == nullptr) {
         std::cerr << "Error: No se pudo cargar el nivel " << levelNumber << std::endl;
@@ -41,10 +42,12 @@ bool Level::loadLevel() {
     
     // Limpiar movimientos
     movements.clear();
-    // Finalizar medición del tiempo de carga del archivo
-    auto endTime = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-    loadTimeMs = duration.count() / 1000.0;
+    
+    // Finalizar medición del tiempo total de carga
+    auto totalEndTime = std::chrono::high_resolution_clock::now();
+    auto totalDuration = std::chrono::duration_cast<std::chrono::microseconds>(totalEndTime - totalStartTime);
+    totalLoadTimeMs = totalDuration.count() / 1000.0;
+    
     return true;
 }
 
@@ -119,7 +122,11 @@ void Level::setMovements(const std::vector<Movement>& newMovements) {
 }
 
 double Level::getLoadTime() const {
-    return loadTimeMs;
+    return fileLoadTimeMs;
+}
+
+double Level::getTotalLoadTime() const {
+    return totalLoadTimeMs;
 }
 
 int Level::getPlayer1MoveCount() const {
